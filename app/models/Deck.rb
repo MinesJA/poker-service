@@ -11,6 +11,14 @@ class Deck
         card = @cards[ind]
     end
 
+    def contains(card)
+        self.cards.include?(card)
+    end
+
+    def size
+        self.cards.size
+    end
+
     private
 
     def generate_cards()
