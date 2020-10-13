@@ -6,8 +6,10 @@ describe Card, '.new' do
 
         expect(card).to be_instance_of(Card)
 
-        expect(card.rank.name).to be_eq(Rank::TEN.name)
-        expect(card.suit.name).to be_eq(Suit::CLUBS.name)
+        # byebug
+
+        expect(card.rank).to be_eql(Rank::TEN)
+        expect(card.suit).to be_eql(Suit::CLUBS)
     end
 
     
@@ -20,7 +22,7 @@ describe Card, '#eql?' do
 
         cardC = Card.new(Rank::NINE, Suit::CLUBS)
 
-        expect(cardA).to be_eq(cardB)
-        expect(cardA).to_not be_eq(cardC)
+        expect(cardA).to be_eql(cardB)
+        expect(cardA).to_not be_eql(cardC)
     end
 end

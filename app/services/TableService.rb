@@ -1,47 +1,55 @@
 class TableService
 
-    attr_accessor :deck, :num_players, :player_hands, :table_hand
+    attr_accessor :num_players, :player_holes, :community_cards, :burn_pile
+    attr_reader :deck
 
     def initialize(num_players)
         @deck = Deck.new()
         @num_players = num_players
-        @player_hands = {}
-        @table_hand = []
+        @player_holes = {}
+        @community_cards = []
+        @burn_pile = []
     end
 
     def run_round()
-        deal()
+        self.player_holes = deal()
         
-        # Burn a card
-        deck.deal
+        # burn
+        self.burn_pile.push(deck.deal)
 
-        # Deal the Flop
-        3.times do
-            table_hand.push(deck.deal)
-        end
+        # FLOP
+        3.times { community_cards.push(deck.deal) }
 
-        # Burn a card
-        deck.deal
+        # burn
+        self.burn_pile.push(deck.deal)
 
-        # Deal the turn
-        table_hand.push(deck.deal)
+        # TURN
+        community_cards.push(deck.deal)
 
-        # Burn a card
-        deck.deal
+        # burn
+        self.burn_pile.push(deck.deal)
 
-        # Deal the river
-        table_hand.push(deck.deal)
+        # RIVER
+        community_cards.push(deck.deal)
     end
 
     def deal()
-       2.times do
-            for i in 0..num_players
-                if(player_hands[i])
-                    player_hands[i].push(deck.deal)
+        hands = {}
+
+        2.times do
+            (1..num_players).each do |i| 
+                if(hands[i])
+                    hands[i].push(deck.deal)
                 else
-                    self.player_hands[i] = [deck.deal]
+                    hands[i] = [deck.deal]
                 end
             end
         end
+
+        return hands
+    end
+
+    def inspect
+        "#<#{self.class}:#{self.object_id} @players=#{self.num_players} players>"
     end
 end
