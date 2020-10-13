@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe Deck, '.new' do
     it 'creates a new deck with 52 cards' do
         deckA = Deck.new()

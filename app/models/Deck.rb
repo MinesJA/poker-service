@@ -37,7 +37,7 @@ class Deck
 
     def generate_cards()
         Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(r,s) }
+            Rank::ALL.map { |r| Card.new(r, s) }
         }.shuffle
     end
 
