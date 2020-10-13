@@ -33,6 +33,10 @@ class Deck
         cards.hash
     end
 
+    def inspect
+        "#<#{self.class}:#{self.object_id} @Cards=#{self.cards.size} cards>"
+    end
+
     private
 
     def generate_cards()
