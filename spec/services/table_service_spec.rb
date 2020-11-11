@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe TableService, '.new' do
     it 'should be created with a new deck' do
         num_players = 5
