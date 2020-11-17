@@ -1,4 +1,5 @@
 require_relative 'boot'
+# require_relative './app/utils/array_utils.rb'
 
 require "rails"
 # Pick the frameworks you want:
