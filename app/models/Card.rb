@@ -17,4 +17,8 @@ class Card
     def hash
         [rank.name, suit.name].hash
     end
+
+    def to_s
+        "#{rank.name} of #{suit.name}"
+    end
 end

@@ -24,7 +24,7 @@ module IdentificationService
 
         winning_hand = [flush_based, match_based, straight_based].compact.max_by{|hand| hand.metahand.score}
 
-        return winning_hand.nil? ? Hand.new(metahand: MetaHand::HIGH_CARD, cards: cards.max_by{|card| card.rank.score}) : winning_hand
+        return winning_hand.nil? ? Hand.new(metahand: MetaHand::HIGH_CARD, cards: [cards.max_by{|card| card.rank.score}]) : winning_hand
     end
     
     private
