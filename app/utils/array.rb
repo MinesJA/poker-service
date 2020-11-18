@@ -32,30 +32,32 @@ class Array
 
   def sequences(&block)
     seqs = []
-    if self.is_sequence?(&block) || self.size <= 1
-      seqs.push(self)
-    else
-      arrs = self.each_slice( (self.size/2.0).round ).to_a
-      seqs = seqs + arrs[0].sequences(&block) + arrs[1].sequences(&block)
-    end  
+    last_ind = 0
 
-    if seqs.size < 2
-      return seqs
-    else
-      new_seq = []
-      indexes = seqs.size-1  
-      indexes.times { |i| 
-        merged = seqs[i] + seqs[i+1]
-        if merged.is_sequence?(&block)
-          new_seq.pop()
-          new_seq.push(merged)
-        else
-          new_seq.push(seqs[i])
-          new_seq.push(seqs[i+1])
-        end
-      }
+    diff = -> (x,y) {
+      if block_given?
+        d = block.call(x) - block.call(y)
+        puts "Calling diff"
+        puts x,y
+        return d
+      else
+        x - y
+      end
+    }
+    sorted = block_given? ? self.sort_by(&block) : self.sort
+    puts sorted
+
+    sorted.each_index do |i|
+      if i == 0
+        seqs.push([sorted[i]]) 
+      elsif diff.call(sorted[i], sorted[i-1]) == 1
+        seqs[last_ind].push(sorted[i])
+      else
+        seqs.push([sorted[i]])
+        last_ind += 1
+      end
     end
-    return new_seq
+    return seqs
   end
 
   def frequency(&block)
