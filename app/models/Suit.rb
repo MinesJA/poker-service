@@ -7,4 +7,4 @@ module Suit
     HEARTS = suit.new("hearts")
   
     ALL = [CLUBS, DIAMONDS, SPADES, HEARTS]
-  end
+end

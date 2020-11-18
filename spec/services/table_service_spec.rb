@@ -42,4 +42,23 @@ describe TableService, '#run_round' do
 
         expect(tb.player_holes.values.size).to be_eql(5)
     end
+
+    it 'should be able to calculate winners' do
+        
+        num_players = 5
+
+        tb = TableService.new(num_players)
+
+        expect(tb.deck.size).to be_eql(52)
+
+        tb.run_round()
+        
+        burned_count = tb.burn_pile.size
+        hole_count = tb.player_holes.values.flatten.size()
+        community_count = tb.community_cards.size()
+        
+        byebug
+    end        
+
 end
+
