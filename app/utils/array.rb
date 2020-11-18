@@ -37,16 +37,13 @@ class Array
     diff = -> (x,y) {
       if block_given?
         d = block.call(x) - block.call(y)
-        puts "Calling diff"
-        puts x,y
         return d
       else
         x - y
       end
     }
     sorted = block_given? ? self.sort_by(&block) : self.sort
-    puts sorted
-
+    
     sorted.each_index do |i|
       if i == 0
         seqs.push([sorted[i]]) 
@@ -61,14 +58,19 @@ class Array
   end
 
   def frequency(&block)
-    p = Hash.new(0); each{ |v| p[block_given? ? block.call(v) : v] += 1 }; p
+    p = Hash.new(0); each{|v| p[block_given? ? block.call(v) : v] += 1 }; p
   end
 
-  # def group_by_frequency(&block)
-  #   p = Hash.new(0)
-  #   each{ |v| p[block_given? ? block.call(v) : v] += 1 }
-  #   p
-  # end
+  def group_by_frequency(&block)
+    p = Hash.new([])
+
+    new_block = -> x {block_given? ? block.call(x) : x}
+
+    group_by(&new_block)
+      .each{|k,v| p[v.size] = p[v.size] + v}
+
+    return p
+  end
 end
 
   

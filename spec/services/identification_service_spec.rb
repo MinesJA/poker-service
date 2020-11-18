@@ -143,7 +143,7 @@ describe IdentificationService, '#identify' do
             Card.new(Rank::FIVE, Suit::HEARTS),
             Card.new(Rank::ACE, Suit::HEARTS),
             Card.new(Rank::SEVEN, Suit::HEARTS),
-            Card.new(Rank::TWO, Suit::HEARTS)
+            Card.new(Rank::JACK, Suit::HEARTS)
         ]
 
         cards2 = [
@@ -157,14 +157,14 @@ describe IdentificationService, '#identify' do
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FIVE, Suit::HEARTS),
-            Card.new(Rank::ACE, Suit::HEARTS),
+            Card.new(Rank::ACE, Suit::HEARTS), 
+            Card.new(Rank::JACK, Suit::HEARTS),
             Card.new(Rank::SEVEN, Suit::HEARTS),
-            Card.new(Rank::TWO, Suit::HEARTS)
+            Card.new(Rank::FIVE, Suit::HEARTS),
+            Card.new(Rank::FOUR, Suit::HEARTS)
         ]
 
-        hand = Hand.new(metahand: MetaHand::STRAIGHT, cards: hand_cards)
+        hand = Hand.new(metahand: MetaHand::FLUSH, cards: hand_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
@@ -269,12 +269,12 @@ describe IdentificationService, '#identify' do
             Card.new(Rank::SEVEN, Suit::SPADES),
             Card.new(Rank::EIGHT, Suit::SPADES),
         ]
-
+        
         hand = Hand.new(metahand: MetaHand::STRAIGHT_FLUSH, cards: hand_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
-
+        
         expect(hand1).to eq(hand)
         expect(hand2).to eq(hand)
     end
