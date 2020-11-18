@@ -7,7 +7,7 @@ class Card
     end
 
     def ==(other)
-        (self.rank.name == other.rank.name) && (self.suit.name == other.suit.name)
+        return (self.rank.name == other.rank.name && self.suit.name == other.suit.name)
     end
 
     def eql?(other)

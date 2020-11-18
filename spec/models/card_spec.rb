@@ -6,8 +6,6 @@ describe Card, '.new' do
 
         expect(card).to be_instance_of(Card)
 
-        # byebug
-
         expect(card.rank).to be_eql(Rank::TEN)
         expect(card.suit).to be_eql(Suit::CLUBS)
     end

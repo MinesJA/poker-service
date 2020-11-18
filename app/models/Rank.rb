@@ -20,4 +20,4 @@ module Rank
       SEVEN, EIGHT, NINE, TEN, 
       JACK, QUEEN, KING, ACE
     ]
-  end
+end
