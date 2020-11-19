@@ -17,7 +17,10 @@ describe Round, '#run_round' do
 
         players = ['Adam', 'Betty', 'Carl', 'Darlene', 'Evan', 'Francene']
 
-        Table.run_and_print(players)
+        # table = Table.new(player_names: players)
+
+        stats = Table.new_and_run(player_names: players, count: 100000)
+        byebug
 
         
     end

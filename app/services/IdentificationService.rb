@@ -36,6 +36,7 @@ module IdentificationService
         
         if by_freq.key?(4)
             # This assumes max 7 cards so won't have more than 4 of a kind
+
             return Hand.new(metahand: MetaHand::FOUR_KIND, cards: by_freq[4])
         elsif by_freq.key?(3)
             threes = by_freq[3].max_by(3){|card| card.rank.score}

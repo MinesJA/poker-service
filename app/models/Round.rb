@@ -17,12 +17,11 @@ class Round
     end
 
     def run()
-
-        # 1) Deal 2 to each player
+        # 1) Deal 2 cards to each player
         2.times do
             table.players.each{|player| holes[player].push(deck.deal)}
         end
-        
+
         # 2) Burn one
         burned.push(deck.deal)
 
