@@ -1,14 +1,25 @@
 require 'rails_helper'
 
 describe Round, '.new' do
-    it 'creates a new Round with....' do
+    it 'is initilized with a table and empty params' do
+        round = Round.new(table: build(:table))
 
+        expect(round.table).to be_instance_of(Table)
+
+        expect(round.holes).to be_empty
+        expect(round.community).to be_empty
+        expect(round.burned).to be_empty
+        expect(round.hands).to be_empty
+
+        expect(round.deck.cards.count).to eq 52
+        deck = Deck.new
+        round.deck.cards.each{ |card| expect(deck.contains(card)).to be true}
     end
 end
 
 
 describe Round, '#run_round' do
-    it 'runs a new Round with....' do
+    it 'is initilized' do
         
         # tb = Table.new(player_names: ['Adam', 'Betty', 'Carl', 'Darlene', 'Evan', 'Francene'])
     
@@ -19,7 +30,7 @@ describe Round, '#run_round' do
 
         # table = Table.new(player_names: players)
 
-        stats = Table.new_and_run(player_names: players, count: 100000)
+        stats = Table.new_and_run(player_names: players, count: 1)
         byebug
 
         

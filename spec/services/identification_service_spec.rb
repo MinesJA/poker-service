@@ -137,26 +137,6 @@ describe IdentificationService, '#identify' do
         expect(hand2).to eq(hand)
     end
 
-    it 'can identify two straights' do
-        community = [
-        Card.new(rank: Rank::TEN, suit: Suit::HEARTS),
-        Card.new(rank: Rank::THREE, suit: Suit::DIAMONDS),
-        Card.new(rank: Rank::EIGHT, suit: Suit::SPADES),
-        Card.new(rank: Rank::TWO, suit: Suit::DIAMONDS),
-        Card.new(rank: Rank::NINE, suit: Suit::HEARTS),
-        ]
-
-        # player1 = [Card.new(rank: Rank::QUEEN, Sui)]
-
-        # Straight 
-        #  ["queen of clubs", "jack of hearts", "king of hearts", "three of spades"]
-        
-        #  Francene - 
-        #  Straight 
-        #  ["queen of hearts", "jack of spades", "king of clubs", "nine of spades"]
-
-    end
-
     it 'can identify a Flush' do
         cards1 = [
             Card.new(Rank::FOUR, Suit::HEARTS), 

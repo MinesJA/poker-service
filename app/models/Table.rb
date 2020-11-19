@@ -2,8 +2,8 @@ class Table
 
     attr_reader :players, :rounds
 
-    def initialize(player_names:)
-        @players = player_names.map{|name| Player.new(name: name)}
+    def initialize(players:)
+        @players = players
         @rounds = []
     end
 
