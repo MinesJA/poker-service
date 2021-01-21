@@ -2,58 +2,15 @@ require_relative "../utils/array"
 
 module IdentificationService
     
-    
-    # 1. Royal Flush
-        # 5 cards
-        # Rank Seq
-        # Suit Match
-    # 2. Straight Flush
-        # 5 cards
-        # Rank Seq
-        # Suit Match
-    # 3. Four Kind
-        # 4 cards
-        # Rank Match
-    # 4. Full House
-        # 5 cards
-        # Rank Match
-    # 5. Flush
-        # 5 cards
-        # Suit Match
-    # 6. Straight
-        # 5 cards
-        # Rank Seq 
-    # 7. Three Kind
-        # 3 cards
-        # Rank Match 
-    # 8. Two Pair
-        # 4 cards
-        # Rank Match
-    # 9. Pair
-        # 2 cards
-        # Rank Match
-    # 10. High Card
-        # 1 card
-    
-    # Min 5 Cards
-    # 1. Royal Flush
-    # 2. Straight Flush
-    # 4. Full House
-    # 5. Flush
-    # 6. Straight
-    
-    # Min 4 Cards
-    # 3. Four Kind
-    # 8. Two Pair
-    
-    # Min 3 Cards
-    # 7. Three Kind
-    
-    # Min 2 Cards
-    # 9. Pair
-    
     # Should return Hand consisting of MetaHand and cards 
     # which constitue the actual MetaHand
+    # 
+    # Should pick the best possible hand, including taking into account
+    # rank scores when you have two of the same hands.
+    # 
+    # EXAMPLE
+    # ==============
+    # [Ace Spades, Ace Diamonds, Ace Clubs] > [Two Spades, Two Diamonds, Two Clubs]
     def identify(cards)
 
         # Hands covered (by score) 1, 2, 5
@@ -67,7 +24,7 @@ module IdentificationService
 
         winning_hand = [flush_based, match_based, straight_based].compact.max_by{|hand| hand.metahand.score}
 
-        return winning_hand.nil? ? Hand.new(metahand: MetaHand::HIGH_CARD, cards: cards.max_by{|card| card.rank.score}) : winning_hand
+        return winning_hand.nil? ? Hand.new(metahand: MetaHand::HIGH_CARD, cards: [cards.max_by{|card| card.rank.score}]) : winning_hand
     end
     
     private
@@ -79,6 +36,7 @@ module IdentificationService
         
         if by_freq.key?(4)
             # This assumes max 7 cards so won't have more than 4 of a kind
+
             return Hand.new(metahand: MetaHand::FOUR_KIND, cards: by_freq[4])
         elsif by_freq.key?(3)
             threes = by_freq[3].max_by(3){|card| card.rank.score}
@@ -104,9 +62,6 @@ module IdentificationService
         maybe_flush = cards.group_by{|card| card.suit }.values
                             .select{|grp| grp.size >= 5 }
                             .max_by{|grp| grp.reduce(0) {|sum, card| sum += card.rank.score}}
-
-                            # Technically could return [[],[]]
-                            # .sort_by{|card| card.rank.score }[0..4]
 
         if maybe_flush
             maybe_straight_flush = maybe_flush.sequences{|card| card.rank.score }
@@ -136,8 +91,4 @@ module IdentificationService
             return Hand.new(metahand: MetaHand::STRAIGHT, cards: straight_cards.sort_by{|card| card.rank.score })
         end
     end
-
-  
-    
-    
 end

@@ -19,5 +19,16 @@ class Hand
         [metahand, cards.frequency].hash
     end
 
+    def to_s
+        metahand.name
+    end
+
+    private
+
+    def cards_str
+        # ap tb.rounds.values.first.hands.map{|k,v| "#{k.name} | #{v.metahand.name}" }
+        cards.map{|card| card.to_s}.join("\n\t")
+    end
+
 
 end
