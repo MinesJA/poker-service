@@ -1,5 +1,6 @@
 FactoryBot.define do
     factory :table do
-        initialize_with{new(players: (0..5).map{|i| build(:player)})}
+        player_count {5}
+        initialize_with{new(players: (0..player_count).map{|i| build(:player)})}
     end
 end

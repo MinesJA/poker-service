@@ -1,49 +1,12 @@
 class Round
-    include IdentificationService
-
-    attr_reader :deck, :table, :holes, :community, :burned, :hands
+    attr_reader :deck, :holes, :community, :burned, :hands
     
-    RIVER = "river"
-    TURN = "turn"
-    FLOP = "flop"
-
-    def initialize(table:)
-        @deck = Deck.new()
-        @table = table
-        @holes = Hash.new{|h,k| h[k] = []}
-        @community = Hash.new([])
-        @burned = []
-        @hands = Hash.new{|h,k| h[k] = []}
-    end
-
-    def run()
-        # 1) Deal 2 cards to each player
-        2.times do
-            table.players.each{|player| holes[player].push(deck.deal)}
-        end
-
-        # 2) Burn one
-        burned.push(deck.deal)
-
-        # 3) Deal FLOP
-        community[FLOP] = (0..2).map{|i| deck.deal}
-
-        # 4) Burn one
-        burned.push(deck.deal)
-
-        # 5) Deal the TURN
-        community[TURN] = [deck.deal]
-
-        # 6) Burn one
-        burned.push(deck.deal)
-
-        # 7) Deal the RIVER
-        community[RIVER] = [deck.deal]
-
-        # 8) Calculate winners
-        table.players.each{|player| hands[player] = identify(holes[player] + community.values.flatten)}
-
-        return self
+    def initialize(deck:, holes:, community:, burned:, hands:)
+        @deck = deck
+        @holes = holes
+        @community = community
+        @burned = burned
+        @hands = hands
     end
 
     def get_winner
@@ -72,21 +35,4 @@ class Round
                 #{player_cards}
         HEREDOC
     end
-
-
-    # Players:
-    # Carl FLUSH:
-    #     Jack of Diamonds
-    #     Ace of Spades
-
-    # Kevin STRAIGHT:
-    #     King of Spades
-    #     Six of Clubs
-
-    # Mary TWO PAIR:
-    #     Eight of Hearts
-    #     Eight of Clubs
-
-
-    
 end
