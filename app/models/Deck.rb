@@ -13,6 +13,10 @@ class Deck
         end
     end
 
+    def pull(card)
+        self.cards.delete(card)
+    end
+
     def contains(card)
         self.cards.include?(card)
     end
@@ -41,7 +45,7 @@ class Deck
 
     def generate_cards()
         Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(r, s) }
+            Rank::ALL.map { |r| Card.new(rank: r, suit: s) }
         }.shuffle
     end
 

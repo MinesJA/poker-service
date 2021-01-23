@@ -4,6 +4,8 @@ describe GameService, '#run_round' do
 
     let(:mock_class) {Class.new { extend GameService } }
 
+    it 'runs produces a round'
+
 
     it 'runs through a round given a table' do
     

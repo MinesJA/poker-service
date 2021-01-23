@@ -1,10 +1,14 @@
 module Suit
-    suit = Struct.new(:name)
+    suit = Struct.new(:name, :short)
   
-    CLUBS = suit.new("clubs")
-    DIAMONDS = suit.new("diamonds")
-    SPADES = suit.new("spades")
-    HEARTS = suit.new("hearts")
+    CLUBS = suit.new("clubs", "c")
+    DIAMONDS = suit.new("diamonds", "d")
+    SPADES = suit.new("spades", "s")
+    HEARTS = suit.new("hearts", "h")
   
     ALL = [CLUBS, DIAMONDS, SPADES, HEARTS]
+
+    def from_str(short:)
+        ALL.find{|suit| suit.short == short}
+    end
 end

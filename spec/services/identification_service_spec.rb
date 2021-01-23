@@ -7,23 +7,23 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Pair' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS)
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::THREE, Suit::HEARTS), 
-            Card.new(Rank::KING, Suit::DIAMONDS), 
-            Card.new(Rank::FOUR, Suit::CLUBS), 
-            Card.new(Rank::ACE, Suit::SPADES), 
-            Card.new(Rank::JACK, Suit::HEARTS), 
-            Card.new(Rank::TWO, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::THREE, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::KING, suit: Suit::DIAMONDS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES), 
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::TWO, suit: Suit::CLUBS)
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS)
         ]
 
         hand = Hand.new(metahand: MetaHand::PAIR, cards: hand_cards)
@@ -37,27 +37,27 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Two Pair' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::SPADES),
-            Card.new(Rank::FOUR, Suit::CLUBS),
-            Card.new(Rank::ACE, Suit::DIAMONDS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS),
+            Card.new(rank: Rank::ACE, suit: Suit::DIAMONDS), 
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::THREE, Suit::HEARTS), 
-            Card.new(Rank::KING, Suit::DIAMONDS), 
-            Card.new(Rank::FOUR, Suit::CLUBS), 
-            Card.new(Rank::ACE, Suit::SPADES), 
-            Card.new(Rank::JACK, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::DIAMONDS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::THREE, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::KING, suit: Suit::DIAMONDS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES), 
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::DIAMONDS)
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::CLUBS),
-            Card.new(Rank::ACE, Suit::SPADES),
-            Card.new(Rank::ACE, Suit::DIAMONDS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS),
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES),
+            Card.new(rank: Rank::ACE, suit: Suit::DIAMONDS), 
         ]
 
         hand = Hand.new(metahand: MetaHand::TWO_PAIR, cards: hand_cards)
@@ -71,25 +71,25 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Three of a Kind' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::FOUR, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS)
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::THREE, Suit::HEARTS), 
-            Card.new(Rank::KING, Suit::DIAMONDS), 
-            Card.new(Rank::FOUR, Suit::CLUBS), 
-            Card.new(Rank::FOUR, Suit::SPADES), 
-            Card.new(Rank::JACK, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::DIAMONDS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::THREE, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::KING, suit: Suit::DIAMONDS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES), 
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::DIAMONDS)
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::FOUR, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS)
         ]
 
         hand = Hand.new(metahand: MetaHand::THREE_KIND, cards: hand_cards)
@@ -103,29 +103,29 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Straight' do
         cards1 = [
-            Card.new(Rank::SEVEN, Suit::DIAMONDS),
-            Card.new(Rank::FIVE, Suit::SPADES),
-            Card.new(Rank::SIX, Suit::CLUBS),
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::EIGHT, Suit::CLUBS)
+            Card.new(rank: Rank::SEVEN, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES),
+            Card.new(rank: Rank::SIX, suit: Suit::CLUBS),
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS)
         ]
 
         cards2 = [
-            Card.new(Rank::SEVEN, Suit::DIAMONDS), 
-            Card.new(Rank::EIGHT, Suit::CLUBS), 
-            Card.new(Rank::FIVE, Suit::SPADES), 
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::SIX, Suit::CLUBS), 
-            Card.new(Rank::JACK, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::DIAMONDS)
+            Card.new(rank: Rank::SEVEN, suit: Suit::DIAMONDS), 
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES), 
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::SIX, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::DIAMONDS)
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FIVE, Suit::SPADES),
-            Card.new(Rank::SIX, Suit::CLUBS),
-            Card.new(Rank::SEVEN, Suit::DIAMONDS),
-            Card.new(Rank::EIGHT, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES),
+            Card.new(rank: Rank::SIX, suit: Suit::CLUBS),
+            Card.new(rank: Rank::SEVEN, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS)
         ]
 
         hand = Hand.new(metahand: MetaHand::STRAIGHT, cards: hand_cards)
@@ -139,29 +139,29 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Flush' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FIVE, Suit::HEARTS),
-            Card.new(Rank::ACE, Suit::HEARTS),
-            Card.new(Rank::SEVEN, Suit::HEARTS),
-            Card.new(Rank::JACK, Suit::HEARTS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FIVE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::SEVEN, suit: Suit::HEARTS),
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS)
         ]
 
         cards2 = [
-            Card.new(Rank::TWO, Suit::HEARTS),
-            Card.new(Rank::EIGHT, Suit::CLUBS), 
-            Card.new(Rank::FIVE, Suit::HEARTS),
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::HEARTS),
-            Card.new(Rank::JACK, Suit::HEARTS), 
-            Card.new(Rank::SEVEN, Suit::HEARTS)
+            Card.new(rank: Rank::TWO, suit: Suit::HEARTS),
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::FIVE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::SEVEN, suit: Suit::HEARTS)
         ]
 
         hand_cards = [
-            Card.new(Rank::ACE, Suit::HEARTS), 
-            Card.new(Rank::JACK, Suit::HEARTS),
-            Card.new(Rank::SEVEN, Suit::HEARTS),
-            Card.new(Rank::FIVE, Suit::HEARTS),
-            Card.new(Rank::FOUR, Suit::HEARTS)
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::JACK, suit: Suit::HEARTS),
+            Card.new(rank: Rank::SEVEN, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FIVE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS)
         ]
 
         hand = Hand.new(metahand: MetaHand::FLUSH, cards: hand_cards)
@@ -175,29 +175,29 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Full House' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::HEARTS),
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
-            Card.new(Rank::ACE, Suit::CLUBS),
-            Card.new(Rank::FOUR, Suit::SPADES)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::ACE, suit: Suit::CLUBS),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES)
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::CLUBS), 
-            Card.new(Rank::ACE, Suit::CLUBS),
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::HEARTS),
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
-            Card.new(Rank::SEVEN, Suit::HEARTS)
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::ACE, suit: Suit::CLUBS),
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::SEVEN, suit: Suit::HEARTS)
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::ACE, Suit::HEARTS),
-            Card.new(Rank::ACE, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::ACE, suit: Suit::HEARTS),
+            Card.new(rank: Rank::ACE, suit: Suit::CLUBS)
         ]
 
         hand = Hand.new(metahand: MetaHand::FULL_HOUSE, cards: hand_cards)
@@ -211,27 +211,27 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Four of a Kind' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::CLUBS),
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
-            Card.new(Rank::FOUR, Suit::SPADES)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS),
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES)
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::CLUBS), 
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::ACE, Suit::CLUBS),
-            Card.new(Rank::FOUR, Suit::CLUBS),
-            Card.new(Rank::SEVEN, Suit::HEARTS),
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::ACE, suit: Suit::CLUBS),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS),
+            Card.new(rank: Rank::SEVEN, suit: Suit::HEARTS),
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::HEARTS), 
-            Card.new(Rank::FOUR, Suit::DIAMONDS),
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::FOUR, Suit::CLUBS)
+            Card.new(rank: Rank::FOUR, suit: Suit::HEARTS), 
+            Card.new(rank: Rank::FOUR, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS)
         ]
 
         hand = Hand.new(metahand: MetaHand::FOUR_KIND, cards: hand_cards)
@@ -245,29 +245,29 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Straight Flush' do
         cards1 = [
-            Card.new(Rank::FOUR, Suit::SPADES), 
-            Card.new(Rank::SIX, Suit::SPADES),
-            Card.new(Rank::FIVE, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::SPADES),
-            Card.new(Rank::SEVEN, Suit::SPADES)
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES), 
+            Card.new(rank: Rank::SIX, suit: Suit::SPADES),
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::SPADES),
+            Card.new(rank: Rank::SEVEN, suit: Suit::SPADES)
         ]
 
         cards2 = [
-            Card.new(Rank::FOUR, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::CLUBS), 
-            Card.new(Rank::FIVE, Suit::SPADES),
-            Card.new(Rank::SEVEN, Suit::SPADES),
-            Card.new(Rank::FOUR, Suit::CLUBS),
-            Card.new(Rank::SIX, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::CLUBS), 
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES),
+            Card.new(rank: Rank::SEVEN, suit: Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::CLUBS),
+            Card.new(rank: Rank::SIX, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::SPADES),
         ]
 
         hand_cards = [
-            Card.new(Rank::FOUR, Suit::SPADES), 
-            Card.new(Rank::FIVE, Suit::SPADES),
-            Card.new(Rank::SIX, Suit::SPADES),
-            Card.new(Rank::SEVEN, Suit::SPADES),
-            Card.new(Rank::EIGHT, Suit::SPADES),
+            Card.new(rank: Rank::FOUR, suit: Suit::SPADES), 
+            Card.new(rank: Rank::FIVE, suit: Suit::SPADES),
+            Card.new(rank: Rank::SIX, suit: Suit::SPADES),
+            Card.new(rank: Rank::SEVEN, suit: Suit::SPADES),
+            Card.new(rank: Rank::EIGHT, suit: Suit::SPADES),
         ]
         
         hand = Hand.new(metahand: MetaHand::STRAIGHT_FLUSH, cards: hand_cards)
@@ -281,29 +281,29 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Royal Flush' do
         cards1 = [
-            Card.new(Rank::TEN, Suit::SPADES), 
-            Card.new(Rank::ACE, Suit::SPADES),
-            Card.new(Rank::JACK, Suit::SPADES),
-            Card.new(Rank::KING, Suit::SPADES),
-            Card.new(Rank::QUEEN, Suit::SPADES)
+            Card.new(rank: Rank::TEN, suit: Suit::SPADES), 
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES),
+            Card.new(rank: Rank::JACK, suit: Suit::SPADES),
+            Card.new(rank: Rank::KING, suit: Suit::SPADES),
+            Card.new(rank: Rank::QUEEN, suit: Suit::SPADES)
         ]
 
         cards2 = [
-            Card.new(Rank::TEN, Suit::SPADES), 
-            Card.new(Rank::KING, Suit::SPADES),
-            Card.new(Rank::FIVE, Suit::DIAMONDS),
-            Card.new(Rank::JACK, Suit::SPADES),
-            Card.new(Rank::QUEEN, Suit::SPADES),
-            Card.new(Rank::SIX, Suit::CLUBS),
-            Card.new(Rank::ACE, Suit::SPADES),
+            Card.new(rank: Rank::TEN, suit: Suit::SPADES), 
+            Card.new(rank: Rank::KING, suit: Suit::SPADES),
+            Card.new(rank: Rank::FIVE, suit: Suit::DIAMONDS),
+            Card.new(rank: Rank::JACK, suit: Suit::SPADES),
+            Card.new(rank: Rank::QUEEN, suit: Suit::SPADES),
+            Card.new(rank: Rank::SIX, suit: Suit::CLUBS),
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES),
         ]
 
         hand_cards = [
-            Card.new(Rank::TEN, Suit::SPADES), 
-            Card.new(Rank::JACK, Suit::SPADES),
-            Card.new(Rank::QUEEN, Suit::SPADES),
-            Card.new(Rank::KING, Suit::SPADES),
-            Card.new(Rank::ACE, Suit::SPADES)
+            Card.new(rank: Rank::TEN, suit: Suit::SPADES), 
+            Card.new(rank: Rank::JACK, suit: Suit::SPADES),
+            Card.new(rank: Rank::QUEEN, suit: Suit::SPADES),
+            Card.new(rank: Rank::KING, suit: Suit::SPADES),
+            Card.new(rank: Rank::ACE, suit: Suit::SPADES)
         ]
 
         hand = Hand.new(metahand: MetaHand::ROYAL_FLUSH, cards: hand_cards)

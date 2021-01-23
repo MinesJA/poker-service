@@ -1,9 +1,18 @@
 class Card
     attr_accessor :rank, :suit
     
-    def initialize(rank, suit)
+    def initialize(rank:, suit:)
         @rank = rank
         @suit = suit
+    end
+
+    # Creates a card from short name of card.
+    # For example, "kd" is short for "Kind of Diamonds"
+    def self.from_str(short:)
+        arr = short.downcase.split(//)
+        rank = Ranks.from_str(arr.first())
+        suit = Suit.from_str(arr.second())
+        Card.new(rank: rank, suit: suit)
     end
 
     def ==(other)

@@ -30,7 +30,7 @@ describe Deck, '.new' do
         expect(Rank::ALL.size).to eql(13)
     
         cards = Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(r,s) }
+            Rank::ALL.map { |r| Card.new(rank: r, suit: s) }
         }
     
         expect(cards.size).to eql(52)
@@ -71,4 +71,18 @@ describe Deck, '#deal' do
         #  Trying to deal the 53rd card 
         expect{ deck.deal() }.to raise_error(RuntimeError)
     end
+end
+
+describe Deck, '#pull' do
+    it 'finds and removes a specific card from the deck' do
+        deck = Deck.new()
+
+        card = Card.new(rank: Rank::TWO, suit: Suit::CLUBS)
+        
+        pulled_card = deck.pull(card)
+
+        expect(pulled_card).to eq(card)
+    end
+
+
 end
