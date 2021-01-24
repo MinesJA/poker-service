@@ -10,7 +10,7 @@ class Card
     # For example, "kd" is short for "Kind of Diamonds"
     def self.from_str(short:)
         arr = short.downcase.split(//)
-        rank = Ranks.from_str(arr.first())
+        rank = Rank.from_str(arr.first())
         suit = Suit.from_str(arr.second())
         Card.new(rank: rank, suit: suit)
     end

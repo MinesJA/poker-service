@@ -23,16 +23,16 @@ class GameController < ApplicationController
     
     deck = Deck.new()
   
-    holes = game_params[:holes].map{|player, card_shorts| 
+    holes = game_params[:holes].to_h.map{|player, card_shorts|
       cards = card_shorts.map{|s| deck.pull(Card.from_str(short: s))}
       [player, cards]}.to_h
+
+
+    byebug
 
     community = game_params[:community].map{|type, card_shorts| 
       cards = card_shorts.map{|s| deck.pull(Card.from_str(short: s))}
       [type, cards]}.to_h
-                  
-
-    player_count = game_params[:player_count]
 
     rounds = play_rounds(
       round_count: game_params[:round_count], 
@@ -40,35 +40,13 @@ class GameController < ApplicationController
       holes: holes, 
       community: community,
     )
-
-    render json: @tool, status: 200
-
-
+    byebug
+    render json: rounds, status: 200
   end
 
   private
 
-    # header = {
-  #   round_count: 100,
-  #   holes => {1 => ["KD", "3D"], 2 => [], 3 => [], 4 => []},
-  #   community => {
-  #     flop => ["4D", "5C", "JS"],
-  #     turn => [],
-  #     river => []
-  #   }
-  # }
-
   def game_params
     params.require(:game).permit(:round_count, :holes => {}, community: [flop: [], turn: [], river: []])
   end
-
-  # header = {
-  #   round_count: 100,
-  #   holes => {1 => ["KD", "3D"], 2 => [], 3 => [], 4 => []},
-  #   community => {
-  #     flop => ["4D", "5C", "JS"],
-  #     turn => [],
-  #     river => []
-  #   }
-  # }
 end
