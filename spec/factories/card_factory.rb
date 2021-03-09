@@ -6,7 +6,7 @@ FactoryBot.define do
         end
 
         suit { Suit::ALL.find{|suit| suit.name == suit_name}}
-        rank {Rank::ALL.find{|rank| rank.name == rank_name}}
+        rank {Ranks::ALL.find{|rank| rank.name == rank_name}}
     end
 
 

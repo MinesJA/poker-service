@@ -7,16 +7,20 @@ class Card
     end
 
     # Creates a card from short name of card.
-    # For example, "kd" is short for "Kind of Diamonds"
-    def self.from_str(short:)
+    # For example, "kd" is short for "King of Diamonds"
+    def self.from_str(short)
         arr = short.downcase.split(//)
         rank = Rank.from_str(arr.first())
         suit = Suit.from_str(arr.second())
         Card.new(rank: rank, suit: suit)
     end
 
+    def self.of(rank, suit)
+        Card.new(rank: Rank.of(rank), suit: Suit.of(suit))
+    end
+
     def ==(other)
-        return (self.rank.name == other.rank.name && self.suit.name == other.suit.name)
+        return (self.rank == other.rank && self.suit.name == other.suit.name)
     end
 
     def eql?(other)
@@ -24,10 +28,11 @@ class Card
     end
 
     def hash
-        [rank.name, suit.name].hash
+        [rank, suit.name].hash
     end
 
     def to_s
         "#{rank.name} of #{suit.name}"
     end
 end
+# key = "#{r.name}_#{s.name}".upcase.to_sym

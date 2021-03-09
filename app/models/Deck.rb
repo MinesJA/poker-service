@@ -5,14 +5,22 @@ class Deck
         @cards = generate_cards()
     end
 
+    
+    # Pulls first card from the deck
+    # Should only be used as deal
+    # if shuffle has already happened
     def deal()
-        if(self.cards.size > 0)
-            self.cards.shift()
-        else
+        card = self.cards.shift()
+        if (card)
+            card
+        else 
             raise "Deck is empty. Cannot deal more than 52 cards."
         end
     end
 
+    # Pulls a specific card from a deck and 
+    # returns it, and removes the card from 
+    # the deck.
     def pull(card)
         self.cards.delete(card)
     end
@@ -44,8 +52,8 @@ class Deck
     private
 
     def generate_cards()
-        Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(rank: r, suit: s) }
+        Suit.all.flat_map { |s|
+            Rank.all.map { |r| Card.new(rank: r, suit: s)}
         }.shuffle
     end
 

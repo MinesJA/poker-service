@@ -24,7 +24,7 @@ module IdentificationService
 
         winning_hand = [flush_based, match_based, straight_based].compact.max_by{|hand| hand.metahand.score}
 
-        return winning_hand.nil? ? Hand.new(metahand: MetaHand::HIGH_CARD, cards: [cards.max_by{|card| card.rank.score}]) : winning_hand
+        return winning_hand.nil? ? Hand.new(metahand: MetaHand.of(:HIGH_CARD), cards: [cards.max_by{|card| card.rank.score}]) : winning_hand
     end
     
     private
@@ -37,21 +37,21 @@ module IdentificationService
         if by_freq.key?(4)
             # This assumes max 7 cards so won't have more than 4 of a kind
 
-            return Hand.new(metahand: MetaHand::FOUR_KIND, cards: by_freq[4])
+            return Hand.new(metahand: MetaHand.of(:FOUR_KIND), cards: by_freq[4])
         elsif by_freq.key?(3)
             threes = by_freq[3].max_by(3){|card| card.rank.score}
             if by_freq.key?(2)
                 twos = by_freq[2].max_by(2){|card| card.rank.score}
-                return Hand.new(metahand: MetaHand::FULL_HOUSE, cards: threes + twos)
+                return Hand.new(metahand: MetaHand.of(:FULL_HOUSE), cards: threes + twos)
             else
-                return Hand.new(metahand: MetaHand::THREE_KIND, cards: threes)
+                return Hand.new(metahand: MetaHand.of(:THREE_KIND), cards: threes)
             end
         elsif by_freq.key?(2)
             twos = by_freq[2].max_by(4){|card| card.rank.score}
             if twos.size == 4
-                return Hand.new(metahand: MetaHand::TWO_PAIR, cards: twos)
+                return Hand.new(metahand: MetaHand.of(:TWO_PAIR), cards: twos)
             else
-                return Hand.new(metahand: MetaHand::PAIR, cards: twos)
+                return Hand.new(metahand: MetaHand.of(:PAIR), cards: twos)
             end
         end
     end
@@ -69,13 +69,13 @@ module IdentificationService
                                 .max_by{|grp| grp.reduce(0) {|sum, card| sum += card.rank.score}}
                                 
             if maybe_straight_flush
-                if maybe_straight_flush[0].rank == Rank::TEN
-                    return Hand.new(metahand: MetaHand::ROYAL_FLUSH, cards: maybe_straight_flush)
+                if maybe_straight_flush[0].rank == Rank.of(:TEN)
+                    return Hand.new(metahand: MetaHand.of(:ROYAL_FLUSH), cards: maybe_straight_flush)
                 else
-                    return Hand.new(metahand: MetaHand::STRAIGHT_FLUSH, cards: maybe_straight_flush.sort_by{|card| card.rank.score}.reverse[0..4])
+                    return Hand.new(metahand: MetaHand.of(:STRAIGHT_FLUSH), cards: maybe_straight_flush.sort_by{|card| card.rank.score}.reverse[0..4])
                 end
             else
-                return Hand.new(metahand: MetaHand::FLUSH, cards: maybe_flush.sort_by{|card| card.rank.score}.reverse[0..4])
+                return Hand.new(metahand: MetaHand.of(:FLUSH), cards: maybe_flush.sort_by{|card| card.rank.score}.reverse[0..4])
             end
         end
     end
@@ -88,7 +88,7 @@ module IdentificationService
                                 .max_by{|seq| seq.reduce(0) {|sum, card| sum += card.rank.score}}
                                 
         if straight_cards
-            return Hand.new(metahand: MetaHand::STRAIGHT, cards: straight_cards.sort_by{|card| card.rank.score })
+            return Hand.new(metahand: MetaHand.of(:STRAIGHT), cards: straight_cards.sort_by{|card| card.rank.score })
         end
     end
 end

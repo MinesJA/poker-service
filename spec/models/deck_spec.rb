@@ -26,11 +26,11 @@ describe Deck, '.new' do
     end
 
     it 'contains all the right cards' do 
-        expect(Suit::ALL.size).to eql(4)
-        expect(Rank::ALL.size).to eql(13)
+        expect(Suit.all.size).to eql(4)
+        expect(Rank.all.size).to eql(13)
     
-        cards = Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(rank: r, suit: s) }
+        cards = Suit.all.flat_map{ |s|
+            Rank.all.map { |r| Card.new(rank: r, suit: s) }
         }
     
         expect(cards.size).to eql(52)
@@ -77,7 +77,7 @@ describe Deck, '#pull' do
     it 'finds and removes a specific card from the deck' do
         deck = Deck.new()
 
-        card = Card.new(rank: Rank::TWO, suit: Suit::CLUBS)
+        card = Card.new(rank: Rank.of(:TWO), suit: Suit.of(:CLUBS))
         
         pulled_card = deck.pull(card)
 

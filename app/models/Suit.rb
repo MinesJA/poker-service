@@ -1,14 +1,12 @@
-module Suit
-    suit = Struct.new(:name, :short)
-  
-    CLUBS = suit.new("clubs", "c")
-    DIAMONDS = suit.new("diamonds", "d")
-    SPADES = suit.new("spades", "s")
-    HEARTS = suit.new("hearts", "h")
-  
-    ALL = [CLUBS, DIAMONDS, SPADES, HEARTS]
+class Suit < Enum
+    meta_attr :short
 
-    def from_str(short:)
-        ALL.find{|suit| suit.short == short}
+    enum_attr :CLUBS, "c"
+    enum_attr :DIAMONDS, "d"
+    enum_attr :SPADES, "s"
+    enum_attr :HEARTS, "h"
+
+    def self.from_str(short)
+        self.all.find{|suit| suit.short == short}
     end
 end

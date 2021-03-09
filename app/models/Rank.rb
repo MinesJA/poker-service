@@ -1,54 +1,22 @@
-module Ranks
+class Rank < Enum
+  meta_attr :short, :score
 
-  TWO = rank.new("two", "2", 1)
-  THREE = rank.new("three", "3", 2)
-  FOUR = rank.new("four", "4", 3)
-  FIVE = rank.new("five", "5", 4)
-  SIX = rank.new("six", "6", 5)
-  SEVEN = rank.new("seven", "7", 6)
-  EIGHT = rank.new("eight", "8", 7)
-  NINE = rank.new("nine", "9", 8)
-  TEN = rank.new("ten", "10", 9)
-  JACK = rank.new("jack", "j", 10)
-  QUEEN = rank.new("queen", "q", 11)
-  KING = rank.new("king", "k", 12)
-  ACE = rank.new("ace", "a", 13)
-
-  ALL = [
-    TWO, THREE, FOUR, FIVE, SIX, 
-    SEVEN, EIGHT, NINE, TEN, 
-    JACK, QUEEN, KING, ACE
-]
-
-
-  class Rank
-
-    def from_str(short:)
-      ALL.find{|rank| rank.short == short}
-    end
-
-
-    def ==(other)
-      return (self.rank.name == other.rank.name && self.suit.name == other.suit.name)
-    end
-
-    def eql?(other)
-        self == other
-    end
-
-    def hash
-        [rank.name, suit.name].hash
-    end
-
-    def to_s
-        "#{rank.name} of #{suit.name}"
-    end
-
-
+  enum_attr :TWO, "2", 1
+  enum_attr :THREE, "3", 2
+  enum_attr :FOUR, "4", 3
+  enum_attr :FIVE, "5", 4
+  enum_attr :SIX, "6", 5
+  enum_attr :SEVEN, "7", 6
+  enum_attr :EIGHT, "8", 7
+  enum_attr :NINE, "9", 8
+  enum_attr :TEN, "10", 9
+  enum_attr :JACK, "j", 10
+  enum_attr :QUEEN, "q", 11
+  enum_attr :KING, "k", 12
+  enum_attr :ACE, "a", 13
+  
+  def self.from_str(short)
+    self.all.find{|rank| rank.short == short}
   end
-    rank = Struct.new(:name, :short, :score)
-  
-  
-
   
 end
