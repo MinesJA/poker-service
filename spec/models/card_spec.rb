@@ -8,9 +8,7 @@ describe Card, '.new' do
 
         expect(card.rank).to be_eql(Rank.of(:TEN))
         expect(card.suit).to be_eql(Suit.of(:CLUBS))
-    end
-
-    
+    end    
 end
 
 describe Card, '#eql?' do

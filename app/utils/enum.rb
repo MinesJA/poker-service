@@ -30,7 +30,6 @@ class Enum
   end
 
   def self.of(name)
-    # TODO: Need error checking here
     self.instance.enums[name]
   end
 

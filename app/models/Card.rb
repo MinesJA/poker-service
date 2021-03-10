@@ -35,4 +35,3 @@ class Card
         "#{rank.name} of #{suit.name}"
     end
 end
-# key = "#{r.name}_#{s.name}".upcase.to_sym

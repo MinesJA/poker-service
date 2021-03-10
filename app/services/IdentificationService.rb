@@ -54,6 +54,7 @@ module IdentificationService
                 return Hand.new(metahand: MetaHand.of(:PAIR), cards: twos)
             end
         end
+        # Todo: why don't I need to return anything here?
     end
 
     # Covers all Flush based hands
