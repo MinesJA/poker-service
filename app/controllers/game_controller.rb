@@ -19,9 +19,7 @@ class GameController < ApplicationController
     # Run x number of games with y number of players
     # Collect all rounds
 
-    byebug
     
-    deck = Deck.new()
   
     holes = game_params[:holes].to_h.map{|player, card_shorts|
       cards = card_shorts.map{|s| deck.pull(Card.from_str(short: s))}

@@ -1,38 +1,27 @@
 class Round
     attr_reader :deck, :holes, :community, :burned, :hands
     
-    def initialize(deck:, holes:, community:, burned:, hands:)
+    # Object for storing results of a completed round
+    # should include the remaining deck (after dealing)
+    # the player holes, the community cards, and the
+    # burned pile.
+
+    # This should be the object for serialization to be sent
+    # back in in response to controller
+    # 
+    # Also includes the hands in the form of:
+    # {[player_num]: Hand<best hand>}
+    def initialize(deck:, holes:, community:, burned:, deal_hands:, flop_hands:, turn_hands:, river_hands:)
         @deck = deck
         @holes = holes
         @community = community
         @burned = burned
-        @hands = hands
+        @deal_hands = deal_hands
+        @flop_hands = flop_hands
+        @turn_hands = turn_hands
+        @river_hands = river_hands
     end
 
-    def get_winner
-        return hands.max_by{|k,v| v.metahand.score}
-    end
 
-    def to_s
-        winner = get_winner
-        community.map{|k,v| 
-            <<~HEREDOC
-                #{k}
-                #{v.map{|card| card.to_s + '\n'}.join('')}
-            HEREDOC
-        }
 
-        community_cards = community.map{|k,v| "#{k} - \n\t\t #{v.map(&:to_s)}"}.join("\n\t")
-        player_cards = holes.map{|player,cards| "#{player} - \n\t\t #{hands[player]} \n\t\t #{cards.map(&:to_s)}"}.join("\n\t")
-        <<~HEREDOC
-        Round: 
-            Winner: #{winner[0]} with the #{winner[1]}
-
-            Community cards: 
-                #{community_cards}
-            
-            Player cards:
-                #{player_cards}
-        HEREDOC
-    end
 end

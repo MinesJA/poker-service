@@ -7,311 +7,315 @@ describe IdentificationService, '#identify' do
 
     it 'can identify a Pair' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :CLUBS)
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Clubs"),
+            Card.new("A", "Spades"), 
         ]
 
         cards2 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:THREE, :HEARTS), 
-            Card.of(:KING, :DIAMONDS), 
-            Card.of(:FOUR, :CLUBS), 
-            Card.of(:ACE, :SPADES), 
-            Card.of(:JACK, :HEARTS), 
-            Card.of(:TWO, :CLUBS)
+            Card.new(4, "Hearts"), 
+            Card.new(3, "Hearts"), 
+            Card.new("K", "Diamonds"), 
+            Card.new(4, "Clubs"), 
+            Card.new("A", "Spades"), 
+            Card.new("J", "Hearts"), 
+            Card.new(2, "Clubs")
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :CLUBS)
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Clubs")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:PAIR), cards: hand_cards)
+        expected = Hand.new(type: :pair , cards: expected_cards, kicker: Card.new("A", "Spades"))
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Two Pair' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:ACE, :SPADES),
-            Card.of(:FOUR, :CLUBS),
-            Card.of(:ACE, :DIAMONDS), 
+            Card.new(4, "Hearts"), 
+            Card.new("A", "Spades"),
+            Card.new(4, "Clubs"),
+            Card.new("A", "Diamonds"),
+            Card.new("K", "Diamonds"),
         ]
 
         cards2 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:THREE, :HEARTS), 
-            Card.of(:KING, :DIAMONDS), 
-            Card.of(:FOUR, :CLUBS), 
-            Card.of(:ACE, :SPADES), 
-            Card.of(:JACK, :HEARTS), 
-            Card.of(:ACE, :DIAMONDS)
+            Card.new(4, "Hearts"), 
+            Card.new(3, "Hearts"), 
+            Card.new("K", "Diamonds"), 
+            Card.new(4, "Clubs"), 
+            Card.new("A", "Spades"), 
+            Card.new("J", "Hearts"), 
+            Card.new("A", "Diamonds")
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :CLUBS),
-            Card.of(:ACE, :SPADES),
-            Card.of(:ACE, :DIAMONDS), 
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Clubs"),
+            Card.new("A", "Spades"),
+            Card.new("A", "Diamonds"), 
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:TWO_PAIR), cards: hand_cards)
+        expected = Hand.new(type: :two_pair, cards: expected_cards, kicker: Card.new("K", "Diamonds"))
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
-    it 'can identify a Three of a Kind' do
+    it 'can identify a Three new a Kind' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :SPADES),
-            Card.of(:FOUR, :CLUBS)
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Spades"),
+            Card.new(4, "Clubs"),
+            Card.new("A", "Diamonds")
         ]
 
         cards2 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:THREE, :HEARTS), 
-            Card.of(:KING, :DIAMONDS), 
-            Card.of(:FOUR, :CLUBS), 
-            Card.of(:FOUR, :SPADES), 
-            Card.of(:JACK, :HEARTS), 
-            Card.of(:ACE, :DIAMONDS)
+            Card.new(4, "Hearts"), 
+            Card.new(3, "Hearts"), 
+            Card.new("K", "Diamonds"), 
+            Card.new(4, "Clubs"), 
+            Card.new(4, "Spades"), 
+            Card.new("J", "Hearts"), 
+            Card.new("A", "Diamonds")
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :SPADES),
-            Card.of(:FOUR, :CLUBS)
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Spades"),
+            Card.new(4, "Clubs")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:THREE_KIND), cards: hand_cards)
+        expected = Hand.new(type: :three_kind, cards: expected_cards, kicker: Card.new("A", "Diamonds"))
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Straight' do
         cards1 = [
-            Card.of(:SEVEN, :DIAMONDS),
-            Card.of(:FIVE, :SPADES),
-            Card.of(:SIX, :CLUBS),
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:EIGHT, :CLUBS)
+            Card.new(7, "Diamonds"),
+            Card.new(5, "Spades"),
+            Card.new(6, "Clubs"),
+            Card.new(4, "Hearts"), 
+            Card.new(8, "Clubs")
         ]
 
         cards2 = [
-            Card.of(:SEVEN, :DIAMONDS), 
-            Card.of(:EIGHT, :CLUBS), 
-            Card.of(:FIVE, :SPADES), 
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:SIX, :CLUBS), 
-            Card.of(:JACK, :HEARTS), 
-            Card.of(:ACE, :DIAMONDS)
+            Card.new(7, "Diamonds"), 
+            Card.new(8, "Clubs"), 
+            Card.new("J", "Hearts"), 
+            Card.new(5, "Spades"), 
+            Card.new(4, "Hearts"), 
+            Card.new(6, "Clubs"), 
+            Card.new("A", "Diamonds")
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FIVE, :SPADES),
-            Card.of(:SIX, :CLUBS),
-            Card.of(:SEVEN, :DIAMONDS),
-            Card.of(:EIGHT, :CLUBS)
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(5, "Spades"),
+            Card.new(6, "Clubs"),
+            Card.new(7, "Diamonds"),
+            Card.new(8, "Clubs")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:STRAIGHT), cards: hand_cards)
+        expected = Hand.new(type: :straight, cards: expected_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Flush' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FIVE, :HEARTS),
-            Card.of(:ACE, :HEARTS),
-            Card.of(:SEVEN, :HEARTS),
-            Card.of(:JACK, :HEARTS)
+            Card.new(4, "Hearts"), 
+            Card.new(5, "Hearts"),
+            Card.new("A", "Hearts"),
+            Card.new(7, "Hearts"),
+            Card.new("J", "Hearts")
         ]
 
         cards2 = [
-            Card.of(:TWO, :HEARTS),
-            Card.of(:EIGHT, :CLUBS), 
-            Card.of(:FIVE, :HEARTS),
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:ACE, :HEARTS),
-            Card.of(:JACK, :HEARTS), 
-            Card.of(:SEVEN, :HEARTS)
+            Card.new(2, "Hearts"),
+            Card.new(8, "Clubs"), 
+            Card.new(5, "Hearts"),
+            Card.new(4, "Hearts"), 
+            Card.new("A", "Hearts"),
+            Card.new("J", "Hearts"), 
+            Card.new(7, "Hearts")
         ]
 
-        hand_cards = [
-            Card.of(:ACE, :HEARTS), 
-            Card.of(:JACK, :HEARTS),
-            Card.of(:SEVEN, :HEARTS),
-            Card.of(:FIVE, :HEARTS),
-            Card.of(:FOUR, :HEARTS)
+        expected_cards = [
+            Card.new("A", "Hearts"), 
+            Card.new("J", "Hearts"),
+            Card.new(7, "Hearts"),
+            Card.new(5, "Hearts"),
+            Card.new(4, "Hearts")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:FLUSH), cards: hand_cards)
+        expected = Hand.new(type: type.new(:FLUSH), cards: expected_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Full House' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:ACE, :HEARTS),
-            Card.of(:FOUR, :DIAMONDS),
-            Card.of(:ACE, :CLUBS),
-            Card.of(:FOUR, :SPADES)
+            Card.new(4, "Hearts"), 
+            Card.new("A", "Hearts"),
+            Card.new(4, "Diamonds"),
+            Card.new("A", "Clubs"),
+            Card.new(4, "Spades")
         ]
 
         cards2 = [
-            Card.of(:FOUR, :SPADES),
-            Card.of(:EIGHT, :CLUBS), 
-            Card.of(:ACE, :CLUBS),
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:ACE, :HEARTS),
-            Card.of(:FOUR, :DIAMONDS),
-            Card.of(:SEVEN, :HEARTS)
+            Card.new(4, "Spades"),
+            Card.new(8, "Clubs"), 
+            Card.new("A", "Clubs"),
+            Card.new(4, "Hearts"), 
+            Card.new("A", "Hearts"),
+            Card.new(4, "Diamonds"),
+            Card.new(7, "Hearts")
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :DIAMONDS),
-            Card.of(:FOUR, :SPADES),
-            Card.of(:ACE, :HEARTS),
-            Card.of(:ACE, :CLUBS)
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Diamonds"),
+            Card.new(4, "Spades"),
+            Card.new("A", "Hearts"),
+            Card.new("A", "Clubs")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:FULL_HOUSE), cards: hand_cards)
+        expected = Hand.new(type: type.new(:FULL_HOUSE), cards: expected_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
-    it 'can identify a Four of a Kind' do
+    it 'can identify a Four new a Kind' do
         cards1 = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :CLUBS),
-            Card.of(:FOUR, :DIAMONDS),
-            Card.of(:FOUR, :SPADES)
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Clubs"),
+            Card.new(4, "Diamonds"),
+            Card.new("A", "Clubs"),
+            Card.new(4, "Spades")
         ]
 
         cards2 = [
-            Card.of(:FOUR, :SPADES),
-            Card.of(:EIGHT, :CLUBS), 
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:ACE, :CLUBS),
-            Card.of(:FOUR, :CLUBS),
-            Card.of(:SEVEN, :HEARTS),
-            Card.of(:FOUR, :DIAMONDS),
+            Card.new(4, "Spades"),
+            Card.new(8, "Clubs"), 
+            Card.new(4, "Hearts"), 
+            Card.new("A", "Clubs"),
+            Card.new(4, "Clubs"),
+            Card.new(7, "Hearts"),
+            Card.new(4, "Diamonds"),
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :HEARTS), 
-            Card.of(:FOUR, :DIAMONDS),
-            Card.of(:FOUR, :SPADES),
-            Card.of(:FOUR, :CLUBS)
+        expected_cards = [
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Diamonds"),
+            Card.new(4, "Spades"),
+            Card.new(4, "Clubs")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:FOUR_KIND), cards: hand_cards)
+        expected = Hand.new(type: :four_kind, cards: expected_cards, kicker: Card.new("A", "Clubs"))
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Straight Flush' do
         cards1 = [
-            Card.of(:FOUR, :SPADES), 
-            Card.of(:SIX, :SPADES),
-            Card.of(:FIVE, :SPADES),
-            Card.of(:EIGHT, :SPADES),
-            Card.of(:SEVEN, :SPADES)
+            Card.new(4, "Spades"), 
+            Card.new(6, "Spades"),
+            Card.new(5, "Spades"),
+            Card.new(8, "Spades"),
+            Card.new(7, "Spades")
         ]
 
         cards2 = [
-            Card.of(:FOUR, :SPADES),
-            Card.of(:EIGHT, :CLUBS), 
-            Card.of(:FIVE, :SPADES),
-            Card.of(:SEVEN, :SPADES),
-            Card.of(:FOUR, :CLUBS),
-            Card.of(:SIX, :SPADES),
-            Card.of(:EIGHT, :SPADES),
+            Card.new(4, "Spades"),
+            Card.new(8, "Clubs"), 
+            Card.new(5, "Spades"),
+            Card.new(7, "Spades"),
+            Card.new(4, "Clubs"),
+            Card.new(6, "Spades"),
+            Card.new(8, "Spades"),
         ]
 
-        hand_cards = [
-            Card.of(:FOUR, :SPADES), 
-            Card.of(:FIVE, :SPADES),
-            Card.of(:SIX, :SPADES),
-            Card.of(:SEVEN, :SPADES),
-            Card.of(:EIGHT, :SPADES),
+        expected_cards = [
+            Card.new(4, "Spades"), 
+            Card.new(5, "Spades"),
+            Card.new(6, "Spades"),
+            Card.new(7, "Spades"),
+            Card.new(8, "Spades"),
         ]
         
-        hand = Hand.new(metahand: MetaHand.of(:STRAIGHT_FLUSH), cards: hand_cards)
+        expected = Hand.new(type: :straight_flush, cards: expected_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
         
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 
     it 'can identify a Royal Flush' do
         cards1 = [
-            Card.of(:TEN, :SPADES), 
-            Card.of(:ACE, :SPADES),
-            Card.of(:JACK, :SPADES),
-            Card.of(:KING, :SPADES),
-            Card.of(:QUEEN, :SPADES)
+            Card.new(10, "Spades"), 
+            Card.new("A", "Spades"),
+            Card.new("J", "Spades"),
+            Card.new("K", "Spades"),
+            Card.new("Q", "Spades")
         ]
 
         cards2 = [
-            Card.of(:TEN, :SPADES), 
-            Card.of(:KING, :SPADES),
-            Card.of(:FIVE, :DIAMONDS),
-            Card.of(:JACK, :SPADES),
-            Card.of(:QUEEN, :SPADES),
-            Card.of(:SIX, :CLUBS),
-            Card.of(:ACE, :SPADES),
+            Card.new(10, "Spades"), 
+            Card.new("K", "Spades"),
+            Card.new(5, "Diamonds"),
+            Card.new("J", "Spades"),
+            Card.new("Q", "Spades"),
+            Card.new(6, "Clubs"),
+            Card.new("A", "Spades"),
         ]
 
-        hand_cards = [
-            Card.of(:TEN, :SPADES), 
-            Card.of(:JACK, :SPADES),
-            Card.of(:QUEEN, :SPADES),
-            Card.of(:KING, :SPADES),
-            Card.of(:ACE, :SPADES)
+        expected_cards = [
+            Card.new(10, "Spades"), 
+            Card.new("J", "Spades"),
+            Card.new("Q", "Spades"),
+            Card.new("K", "Spades"),
+            Card.new("A", "Spades")
         ]
 
-        hand = Hand.new(metahand: MetaHand.of(:ROYAL_FLUSH), cards: hand_cards)
+        expected = Hand.new(type: :royal_flush, cards: expected_cards)
 
         hand1 = mock_class.identify(cards1)
         hand2 = mock_class.identify(cards2)
 
-        expect(hand1).to eq(hand)
-        expect(hand2).to eq(hand)
+        expect(hand1).to eq(expected)
+        expect(hand2).to eq(expected)
     end
 end

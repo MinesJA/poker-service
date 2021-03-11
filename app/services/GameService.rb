@@ -1,41 +1,50 @@
 module GameService
     include IdentificationService
 
-    RIVER = "river"
-    TURN = "turn"
-    FLOP = "flop"
-
-    # Takes a deck, hash of holes by players, and hash of community
+    # Takes a deck, hash of holes by players (for those holes that should
+    # remain constant), and hash of community
     # cards by the type (Flop, turn, river)
     # Runs through entire round and returns a round object
     # 
     # @param Deck deck
-    # @param {String => [Card]} holes
+    # @param {String => [Card]} prexisting holes
     # @param {String => [Card]} community
     # @return Round
     def play_round(deck:, holes:, community:)
+        # TODO: next step would be to calculate winners at every state:
+        #   After Deal
+        #   After Flop
+        #   After Turn: 
+        #   After River
+        #  Would result in:
+        #     { 
+        #       deal: {1: <Hand best hand>, ....},
+        #       flop: {1: <Hand best hand>, ....},
+        #       turn: {1: <Hand best hand>, ....},
+        #       river: {1: <Hand best hand>, ....}
+        #     }
         burned = []
         
         # 1) Deal 2 cards to each player
-        (0..1).each{|i| holes.each{|player, hole| hole.push(deck.deal) if hole.size < 2 }}
+        2.times{holes.each{|player, hole| hole.push(deck.deal) if hole.size < 2 }}
 
         # 2) Burn one
         burned.push(deck.deal)
 
         # 3) Deal FLOP
-        (0..2).each{|i| community[FLOP].push(deck.deal) if community[FLOP].size < 3 }
+        2.times{community.fetch(:flop, []).push(deck.deal) if community.fetch(:flop, []).size < 3 }
 
         # 4) Burn one
         burned.push(deck.deal)
 
         # 5) Deal the TURN
-        community[TURN].push(deck.deal) if community[FLOP].size < 1
+        community.fetch(:turn, []).push(deck.deal) if community.fetch(:turn, []).size < 1
 
         # 6) Burn one
         burned.push(deck.deal)
 
         # 7) Deal the RIVER
-        community[RIVER].push(deck.deal) if community[RIVER].size < 1
+        community.fetch(:river, []).push(deck.deal) if community.fetch(:river, []).size < 1
 
         # 8) Calculate winners
         hands = holes.map{|player, hole| [player, identify(hole+community.values.flatten)]}.to_h

@@ -21,4 +21,15 @@ describe GameService, '#run_round' do
         # expect(round.hands).not_to be_empty
     end
 
+    it 'runs through a number of rounds give round count' do
+        # TODO: TESTS
+    end
+
+    it 'benchmark test??' do
+        # TODO: Maybe something like a simple loop running the run_round
+        # x num of times compared to the actual method
+        # Whatever method I have for running multiple rounds
+        # Should always be faster
+    end
+
 end

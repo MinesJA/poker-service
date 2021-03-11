@@ -52,9 +52,11 @@ class Deck
     private
 
     def generate_cards()
-        Suit.all.flat_map { |s|
-            Rank.all.map { |r| Card.new(rank: r, suit: s)}
-        }.shuffle
+        Card.suits.flat_map do |suit|
+            Card.ranks.map do |rank, score|
+              Card.new(rank: rank, suit: suit)
+            end
+        end.shuffle
     end
-
+    
 end

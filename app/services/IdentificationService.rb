@@ -8,23 +8,22 @@ module IdentificationService
     # Should pick the best possible hand, including taking into account
     # rank scores when you have two of the same hands.
     # 
+    # royal_flush:  10,
+    # straight_flush:  9,
+    # four_kind:  8,
+    # full_house:  7,
+    # flush:  6,
+    # straight:  5,
+    # three_kind:  4,
+    # two_pair:  3,
+    # pair:  2,
+    # high_card:  1
+    # 
     # EXAMPLE
     # ==============
     # [Ace Spades, Ace Diamonds, Ace Clubs] > [Two Spades, Two Diamonds, Two Clubs]
     def identify(cards)
-
-        # Hands covered (by score) 1, 2, 5
-        flush_based = flush_hands(cards)
-
-        # Hands covered (by score) 3, 4, 7, 8, 9
-        match_based = match_hands(cards)
-        
-        # Hands covered (by score) 6
-        straight_based = straight_hands(cards)
-
-        winning_hand = [flush_based, match_based, straight_based].compact.max_by{|hand| hand.metahand.score}
-
-        return winning_hand.nil? ? Hand.new(metahand: MetaHand.of(:HIGH_CARD), cards: [cards.max_by{|card| card.rank.score}]) : winning_hand
+        [flush_straight_hands(cards), match_hands(cards), high_card(cards)].compact.max
     end
     
     private
@@ -35,61 +34,65 @@ module IdentificationService
         by_freq = cards.group_by_frequency(&:rank)
         
         if by_freq.key?(4)
-            # This assumes max 7 cards so won't have more than 4 of a kind
-
-            return Hand.new(metahand: MetaHand.of(:FOUR_KIND), cards: by_freq[4])
+            # There can only be one set of 4, so on need to check for another
+            kicker = by_freq.values_at(1,2,3).flatten.compact.max
+            return Hand.new(type: :four_kind, cards: by_freq[4], kicker: [kicker])
         elsif by_freq.key?(3)
-            threes = by_freq[3].max_by(3){|card| card.rank.score}
+            threes = by_freq[3].max(3)
             if by_freq.key?(2)
-                twos = by_freq[2].max_by(2){|card| card.rank.score}
-                return Hand.new(metahand: MetaHand.of(:FULL_HOUSE), cards: threes + twos)
+                twos = by_freq[2].max(2)
+                return Hand.new(type: :full_house, cards: threes + twos)
             else
-                return Hand.new(metahand: MetaHand.of(:THREE_KIND), cards: threes)
+                kicker = by_freq.values_at(1,2,3).flatten.compact
+                            .filter{|c| !threes.include?(c)}
+                            .max
+                return Hand.new(type: :three_kind, cards: threes, kicker: [kicker])
             end
         elsif by_freq.key?(2)
-            twos = by_freq[2].max_by(4){|card| card.rank.score}
+            twos = by_freq[2].max(4)
+            kicker = by_freq.values_at(1,2).flatten.compact
+                            .filter{|c| !twos.include?(c)}
+                            .max
             if twos.size == 4
-                return Hand.new(metahand: MetaHand.of(:TWO_PAIR), cards: twos)
+                return Hand.new(type: :two_pair, cards: twos, kicker: [kicker])
             else
-                return Hand.new(metahand: MetaHand.of(:PAIR), cards: twos)
-            end
-        end
-        # Todo: why don't I need to return anything here?
-    end
-
-    # Covers all Flush based hands
-    # Royal Flush, Straight Flush, Flush
-    def flush_hands(cards)
-        maybe_flush = cards.group_by{|card| card.suit }.values
-                            .select{|grp| grp.size >= 5 }
-                            .max_by{|grp| grp.reduce(0) {|sum, card| sum += card.rank.score}}
-
-        if maybe_flush
-            maybe_straight_flush = maybe_flush.sequences{|card| card.rank.score }
-                                .select{|seq| seq.size >= 5}
-                                .max_by{|grp| grp.reduce(0) {|sum, card| sum += card.rank.score}}
-                                
-            if maybe_straight_flush
-                if maybe_straight_flush[0].rank == Rank.of(:TEN)
-                    return Hand.new(metahand: MetaHand.of(:ROYAL_FLUSH), cards: maybe_straight_flush)
-                else
-                    return Hand.new(metahand: MetaHand.of(:STRAIGHT_FLUSH), cards: maybe_straight_flush.sort_by{|card| card.rank.score}.reverse[0..4])
-                end
-            else
-                return Hand.new(metahand: MetaHand.of(:FLUSH), cards: maybe_flush.sort_by{|card| card.rank.score}.reverse[0..4])
+                return Hand.new(type: :pair, cards: twos, kicker: [kicker])
             end
         end
     end
 
-    # Covers straight, not including Straight Flush
-    # Straight
-    def straight_hands(cards)
-        straight_cards = cards.sequences{|card| card.rank.score }
-                                .select{|seq| seq.size >= 5}
-                                .max_by{|seq| seq.reduce(0) {|sum, card| sum += card.rank.score}}
-                                
-        if straight_cards
-            return Hand.new(metahand: MetaHand.of(:STRAIGHT), cards: straight_cards.sort_by{|card| card.rank.score })
+    # Covers Flush based hands and straight
+    # Royal Flush, Straight Flush, Flush, Straight
+    def flush_straight_hands(cards)
+
+        # Because we only have 7 cards, can only have
+        # 5, 6, or 7 cards of same suit at any given time
+        suit_5 = cards.group_by_frequency(&:suit)
+                    .values_at(5,6,7)
+                    .flatten.compact
+        
+        if suit_5
+            # Will only be able to find one group at most
+            seq_5 = suit_5.sequences.detect{|seq| seq.size >= 5}.sort.max(5)
+
+            # TODO: Don't love this string checking....
+            if seq_5 && seq_5.first.rank == :"10"
+                return Hand.new(type: :royal_flush, cards: seq_5)
+            elsif seq_t
+                return Hand.new(type: :straight_flush, cards: seq_5)
+            else
+                return Hand.new(type: :flush, cards: suit_5.max(5))
+            end
+        else 
+            # Again, will only be able to find one group at most
+            straight_cards = cards.sequences.detect{|seq| seq.size >= 5}.max(5)
+            if straight_cards
+                return Hand.new(type: :straight, cards: straight_cards)
+            end
         end
+    end
+
+    def high_card(cards)
+        return Hand.new(metahand: :high_card, cards: [cards.max], kicker: cards.max(5))
     end
 end
