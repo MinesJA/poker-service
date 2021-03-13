@@ -1,4 +1,4 @@
-require_relative "../utils/array"
+require_relative "../utils/array" #TODO: Should not be loading like this...
 
 module IdentificationService
     
@@ -65,34 +65,35 @@ module IdentificationService
     # Royal Flush, Straight Flush, Flush, Straight
     def flush_straight_hands(cards)
 
-        # Because we only have 7 cards, can only have
+        # Because we only have 7 cards, we can only have
         # 5, 6, or 7 cards of same suit at any given time
         suit_5 = cards.group_by_frequency(&:suit)
                     .values_at(5,6,7)
                     .flatten.compact
-        
-        if suit_5
-            # Will only be able to find one group at most
-            seq_5 = suit_5.sequences.detect{|seq| seq.size >= 5}.sort.max(5)
 
-            # TODO: Don't love this string checking....
-            if seq_5 && seq_5.first.rank == :"10"
-                return Hand.new(type: :royal_flush, cards: seq_5)
-            elsif seq_t
-                return Hand.new(type: :straight_flush, cards: seq_5)
+        # Get all the cards of one suit as long as there are >= 5 of them
+        if suit_5.any?
+            # Will only be able to find one group at most
+            seq_5 = suit_5.sequences(&:score)
+                            .detect{|seq| seq.size >= 5}
+                            &.max(5)&.sort
+            
+            if seq_5
+                return Hand.new(type: seq_5.first.rank == 10 ? :royal_flush : :straight_flush, cards: seq_5)
             else
                 return Hand.new(type: :flush, cards: suit_5.max(5))
             end
-        else 
+        else
             # Again, will only be able to find one group at most
-            straight_cards = cards.sequences.detect{|seq| seq.size >= 5}.max(5)
-            if straight_cards
-                return Hand.new(type: :straight, cards: straight_cards)
+            straight = cards.sequences(&:score).detect{|seq| seq.size >= 5}
+            
+            if straight
+                return Hand.new(type: :straight, cards: straight.max(5))
             end
         end
     end
 
     def high_card(cards)
-        return Hand.new(metahand: :high_card, cards: [cards.max], kicker: cards.max(5))
+        return Hand.new(type: :high_card, cards: [cards.max], kicker: cards.max(5))
     end
 end

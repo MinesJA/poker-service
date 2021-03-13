@@ -1,21 +1,23 @@
+require_relative "../utils/string" #TODO: Should not be loading like this...
+
 class Card
     include Comparable
 
     # Todo: could make keys and suits symbols
-    RANKS = ((2..10) + %w(J Q K A)).zip(0..12).to_h
+    RANKS = ((2..10).to_a + %w(J Q K A)).zip(0..12).to_h
     SUITS = %w(Hearts Diamonds Clubs Spades)
 
     attr_reader :rank, :suit
 
     def self.ranks
-        RANKS
+        RANKS.keys
     end
 
     def self.suits
         SUITS
     end
 
-    def initialize(rank:, suit:)
+    def initialize(rank, suit)
         raise "Invalid rank" unless RANKS.include?(rank)
         raise "Invalid suit" unless SUITS.include?(suit)
         @rank = rank
@@ -28,17 +30,41 @@ class Card
         r, s = short.upcase.split(//)
         r_num = r.to_i
         rank = if r_num != 0 then r_num else r end
-
         suit = SUITS.find{|suit| suit.initial == s}
-        Card.new(rank: rank, suit: suit)
+        Card.new(rank, suit)
+    end
+
+    def marshal_dump
+        # TODO: implment strategy that produces:
+        # <Card rank=King suit=Diamonds> => "KD"
+        # 
+        # {}.tap do |result|
+        #   result[:age]      = age
+        #   result[:fullname] = fullname if fullname.size <= 64
+        #   result[:roles]    = roles unless roles.include? :admin
+        # end
+    end
+    
+    def marshal_load(serialized_user)
+        # TODO: implment strategy that takes:
+        # "KD" => <Card rank=King suit=Diamonds>
+        # or "King Diamonds" => <Card rank=King suit=Diamonds>
+        # 
+        # self.age      = serialized_user[:age]
+        # self.fullname = serialized_user[:fullname]
+        # self.roles    = serialized_user[:roles] || []
+    end
+
+    # Get's the score of the rank
+    #   example. 
+    #       <Card rank=Jack>.get_score() 
+    #           => 11
+    def score()
+        RANKS[@rank]
     end
 
     def <=>(card)
-        RANKS[@rank] <=> RANKS[card.rank]
-    end
-
-    def suited_with?(card)
-        suit == card.suit
+        self.score <=> card.score
     end
 
     def ==(other)
@@ -50,7 +76,7 @@ class Card
     end
 
     def hash
-        [rank, suit.name].hash
+        [rank, suit].hash
     end
 
     def to_s()

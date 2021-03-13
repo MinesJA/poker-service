@@ -20,17 +20,22 @@ class GameController < ApplicationController
     # Collect all rounds
 
     
-  
-    holes = game_params[:holes].to_h.map{|player, card_shorts|
-      cards = card_shorts.map{|s| deck.pull(Card.from_str(short: s))}
-      [player, cards]}.to_h
+    # Todo: This is technically deserialization, for which we could have a
+    # custom strategy
+    holes = game_params[:holes].to_h.map do |player, card_shorts|
+                # {1: ["kd", ...], ...}
+                cards = card_shorts.map do |s| 
+                  deck.pull(Card.from_str(s))
+                end
+                [player, cards] 
+    end.to_h
+    # {1: [<Card>]}
 
-
-    byebug
-
+    # Todo: deserialization strategy.....
     community = game_params[:community].map{|type, card_shorts| 
       cards = card_shorts.map{|s| deck.pull(Card.from_str(short: s))}
       [type, cards]}.to_h
+
 
     rounds = play_rounds(
       round_count: game_params[:round_count], 
@@ -38,7 +43,9 @@ class GameController < ApplicationController
       holes: holes, 
       community: community,
     )
+
     byebug
+    # Todo: ensure rounds has custom serialization
     render json: rounds, status: 200
   end
 

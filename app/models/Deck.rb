@@ -54,7 +54,7 @@ class Deck
     def generate_cards()
         Card.suits.flat_map do |suit|
             Card.ranks.map do |rank, score|
-              Card.new(rank: rank, suit: suit)
+              Card.new(rank, suit)
             end
         end.shuffle
     end

@@ -1,47 +1,36 @@
 class Hand
     include Comparable
 
-    TYPES = {
-        royal_flush:  10,
-        straight_flush:  9,
-        four_kind:  8,
-        full_house:  7,
-        flush:  6,
-        straight:  5,
-        three_kind:  4,
-        two_pair:  3,
-        pair:  2,
-        high_card:  1
-    }
-
-    # TYPES = %i(
-    #     high_card 
-    #     pair 
-    #     two_pair 
-    #     three_kind 
-    #     straight 
-    #     flush 
-    #     full_house 
-    #     four_kind 
-    #     straight_flush 
-    #     royal_flush).zip(0..9).to_h
+    TYPES = %i(
+        high_card 
+        pair 
+        two_pair 
+        three_kind 
+        straight 
+        flush 
+        full_house 
+        four_kind 
+        straight_flush 
+        royal_flush).zip(1..10).to_h
 
     attr_reader :type, :cards, :kicker
+
+    def self.types
+        TYPES
+    end
 
     # Note that kicker is an array because
     # in the case that two players have matching
     # high cards as the winning hands, each players
     # 5 best cards, including community cards,
-    # are used as kickers (discard worst 2 cards for each).
+    # are used as kickers.
     def initialize(type:, cards:, kicker: [])  
         raise "Invalid type" unless TYPES.include?(type)
+        raise "Cards cannot be empty" unless cards.any?
         @type = type
+        # TODO: Should cards be set?
         @cards = cards
         @kicker = kicker
-    end
-
-    def self.types
-        TYPES
     end
 
     def <=>(hand)
@@ -49,9 +38,9 @@ class Hand
     end
 
     def ==(other)
-        return (self.type == other.type && 
-                self.cards == other.cards && 
-                self.kicker == other.kicker)
+        return self.type == other.type && 
+            self.cards.difference(other.cards.difference).empty? &&
+            self.kicker.difference(other.kicker.difference).empty?
     end
 
     def eql?(other)
