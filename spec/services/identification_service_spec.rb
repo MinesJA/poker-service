@@ -5,14 +5,14 @@ describe IdentificationService, '#identify' do
 
     let(:mock_class) {Class.new { extend IdentificationService } }
 
-    it 'can identify a Pair' do
-        cards1 = [
+    it 'can identify a Pair with right cards' do
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new(4, "Clubs"),
             Card.new("A", "Spades"), 
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Hearts"), 
             Card.new(3, "Hearts"), 
             Card.new("K", "Diamonds"), 
@@ -27,17 +27,18 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Clubs")
         ]
 
-        expected = Hand.new(type: :pair , cards: expected_cards, kicker: [Card.new("A", "Spades")])
+        expectedA = Hand.new(type: :pair , cards: expected_cards, kicker: [Card.new("A", "Spades")])
+        expectedB = Hand.new(type: :pair , cards: expected_cards, kicker: [Card.new("A", "Spades"), Card.new("J", "Hearts"), Card.new("K", "Diamonds")])
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expectedA)
+        expect(handB).to eq(expectedB)
     end
 
     it 'can identify a Two Pair' do
-        cards1 = [
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new("A", "Spades"),
             Card.new(4, "Clubs"),
@@ -45,7 +46,7 @@ describe IdentificationService, '#identify' do
             Card.new("K", "Diamonds"),
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Hearts"), 
             Card.new(3, "Hearts"), 
             Card.new("K", "Diamonds"), 
@@ -64,22 +65,22 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :two_pair, cards: expected_cards, kicker: [Card.new("K", "Diamonds")])
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
-    it 'can identify a Three new a Kind' do
-        cards1 = [
+    it 'can identify a Three of a Kind' do
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new(4, "Spades"),
             Card.new(4, "Clubs"),
             Card.new("A", "Diamonds")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Hearts"), 
             Card.new(3, "Hearts"), 
             Card.new("K", "Diamonds"), 
@@ -95,17 +96,18 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Clubs")
         ]
 
-        expected = Hand.new(type: :three_kind, cards: expected_cards, kicker: [Card.new("A", "Diamonds")])
+        expectedA = Hand.new(type: :three_kind, cards: expected_cards, kicker: [Card.new("A", "Diamonds")])
+        expectedB = Hand.new(type: :three_kind, cards: expected_cards, kicker: [Card.new("A", "Diamonds"), Card.new("K", "Diamonds")])
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expectedA)
+        expect(handB).to eq(expectedB)
     end
 
     it 'can identify a Straight' do
-        cards1 = [
+        cardsA = [
             Card.new(7, "Diamonds"),
             Card.new(5, "Spades"),
             Card.new(6, "Clubs"),
@@ -113,7 +115,7 @@ describe IdentificationService, '#identify' do
             Card.new(8, "Clubs")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(7, "Diamonds"), 
             Card.new(8, "Clubs"), 
             Card.new("J", "Hearts"), 
@@ -133,15 +135,15 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :straight, cards: expected_cards)
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
     it 'can identify a Flush' do
-        cards1 = [
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new(5, "Hearts"),
             Card.new("A", "Hearts"),
@@ -149,7 +151,7 @@ describe IdentificationService, '#identify' do
             Card.new("J", "Hearts")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(2, "Hearts"),
             Card.new(8, "Clubs"), 
             Card.new(5, "Hearts"),
@@ -169,15 +171,15 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :flush, cards: expected_cards)
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
     it 'can identify a Full House' do
-        cards1 = [
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new("A", "Hearts"),
             Card.new(4, "Diamonds"),
@@ -185,7 +187,7 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Spades")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Spades"),
             Card.new(8, "Clubs"), 
             Card.new("A", "Clubs"),
@@ -205,15 +207,15 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :full_house, cards: expected_cards)
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
     it 'can identify a Four new a Kind' do
-        cards1 = [
+        cardsA = [
             Card.new(4, "Hearts"), 
             Card.new(4, "Clubs"),
             Card.new(4, "Diamonds"),
@@ -221,7 +223,7 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Spades")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Spades"),
             Card.new(8, "Clubs"), 
             Card.new(4, "Hearts"), 
@@ -240,15 +242,15 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :four_kind, cards: expected_cards, kicker: [Card.new("A", "Clubs")])
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
     it 'can identify a Straight Flush' do
-        cards1 = [
+        cardsA = [
             Card.new(4, "Spades"), 
             Card.new(6, "Spades"),
             Card.new(5, "Spades"),
@@ -256,7 +258,7 @@ describe IdentificationService, '#identify' do
             Card.new(7, "Spades")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(4, "Spades"),
             Card.new(8, "Clubs"), 
             Card.new(5, "Spades"),
@@ -276,15 +278,15 @@ describe IdentificationService, '#identify' do
         
         expected = Hand.new(type: :straight_flush, cards: expected_cards)
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
         
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 
     it 'can identify a Royal Flush' do
-        cards1 = [
+        cardsA = [
             Card.new(10, "Spades"), 
             Card.new("A", "Spades"),
             Card.new("J", "Spades"),
@@ -292,7 +294,7 @@ describe IdentificationService, '#identify' do
             Card.new("Q", "Spades")
         ]
 
-        cards2 = [
+        cardsB = [
             Card.new(10, "Spades"), 
             Card.new("K", "Spades"),
             Card.new(5, "Diamonds"),
@@ -312,10 +314,10 @@ describe IdentificationService, '#identify' do
 
         expected = Hand.new(type: :royal_flush, cards: expected_cards)
 
-        hand1 = mock_class.identify(cards1)
-        hand2 = mock_class.identify(cards2)
+        handA = mock_class.identify(cardsA)
+        handB = mock_class.identify(cardsB)
 
-        expect(hand1).to eq(expected)
-        expect(hand2).to eq(expected)
+        expect(handA).to eq(expected)
+        expect(handB).to eq(expected)
     end
 end

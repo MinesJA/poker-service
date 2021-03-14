@@ -59,7 +59,7 @@ class Array
   end
 
   def frequency(&block)
-    p = Hash.new(0); each{|v| p[block_given? ? block.call(v) : v] += 1 }; p
+    p = Hash.new(0); self.each{|v| p[block_given? ? block.call(v) : v] += 1 }; p
   end
 
   def group_by_frequency(&block)
@@ -71,6 +71,43 @@ class Array
       .each{|k,v| p[v.size] = p[v.size] + v}
 
     return p
+  end
+
+  # Returns array with highest value when comparing 
+  # value by value in sorted order highest to lowest. 
+  # Stops at first instance where comparison is not 0. If 
+  # no instance found, returns 0.
+  # 
+  # ==== Examples
+  # [5,4,3].compare_sorted([5,4,4])
+  #   => -1
+  # 
+  # Should cut out as soon as one value is higher
+  # than another
+  # 
+  # @param other Array
+  # @param &block Comparison block that should return -1, 0, or 1
+  # @return int of -1, 0, or 1
+  def compare_sorted(other, &block)
+    sorted_self = self.sort.reverse
+    sorted_other = other.sort.reverse
+    
+    maybe_x = nil
+
+    sorted_self.zip(sorted_other)
+              .each {|x,y| 
+                val = (block_given? ? block.call(x,y) : x <=> y)
+                  if(val != 0)
+                    maybe_x = val
+                    break
+                  else 
+                    nil
+                  end
+                }
+    
+    byebug
+
+    return maybe_x ? maybe_x : 0
   end
 end
 

@@ -1,5 +1,7 @@
 module GameService
     include IdentificationService
+
+    STAGE = Struct.new(:player, :hand, :position)
     
     # Takes a deck, hash of holes by players (for those holes that should
     # remain constant), and hash of community
@@ -13,10 +15,18 @@ module GameService
     def run_round(deck:, holes:, community:)
         burned = []
         
+        # Need to calcualte the hand
+        # Then need to take all hands in calculating stats
+        # Can't know the positions of each player until all hands have been generated
+
+
+
+
         # 1) Deal 2 cards to each player
         2.times{holes.each{|player, hole| hole.push(deck.deal) if hole.size < 2 }}
         deal_hands = holes.map{|player, hole| [player, identify(hole+community.values.flatten)]}.to_h
-        deal_stats = calc_win_order(deal_hands)
+
+        deal_stats = calc_stage(deal_hands)
 
         # 2) Burn one
         burned.push(deck.deal)
@@ -47,7 +57,7 @@ module GameService
             holes: holes, 
             community: community, 
             burned: burned, 
-            deal_hands: deal_hands,
+            deal_hands: deal_hands, #{1: <Hand...>, 2: <Hand...>}
             flop_hands: flop_hands,
             turn_hands: turn_hands,
             river_hands: river_hands,
@@ -94,6 +104,9 @@ module GameService
     def calc_win_order(hands)
         
         hands.sort_by{|player_num, hand| hand}
+
+        # deal_hands: deal_hands, #{1: <Hand...>, 2: <Hand...>}
+        
 
         
 

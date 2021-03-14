@@ -39,7 +39,7 @@ describe Card, '#<=>' do
     it 'can be compared by rank' do
 
         # TODO: need a test where we can test for
-        # actual integer returned
+        # actual integer returned: -1, 0, 1
     end
 
     it 'can be sorted by rank' do
