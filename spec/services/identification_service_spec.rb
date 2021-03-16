@@ -27,8 +27,8 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Clubs")
         ]
 
-        expectedA = Hand.new(type: :pair , cards: expected_cards, kicker: [Card.new("A", "Spades")])
-        expectedB = Hand.new(type: :pair , cards: expected_cards, kicker: [Card.new("A", "Spades"), Card.new("J", "Hearts"), Card.new("K", "Diamonds")])
+        expectedA = Hand.new(type: :pair , cards: expected_cards, kickers: [Card.new("A", "Spades")])
+        expectedB = Hand.new(type: :pair , cards: expected_cards, kickers: [Card.new("A", "Spades"), Card.new("J", "Hearts"), Card.new("K", "Diamonds")])
 
         handA = mock_class.identify(cardsA)
         handB = mock_class.identify(cardsB)
@@ -57,13 +57,13 @@ describe IdentificationService, '#identify' do
         ]
 
         expected_cards = [
-            Card.new(4, "Hearts"), 
-            Card.new(4, "Clubs"),
-            Card.new("A", "Spades"),
             Card.new("A", "Diamonds"), 
+            Card.new("A", "Spades"),
+            Card.new(4, "Hearts"), 
+            Card.new(4, "Clubs")
         ]
 
-        expected = Hand.new(type: :two_pair, cards: expected_cards, kicker: [Card.new("K", "Diamonds")])
+        expected = Hand.new(type: :two_pair, cards: expected_cards, kickers: [Card.new("K", "Diamonds")])
 
         handA = mock_class.identify(cardsA)
         handB = mock_class.identify(cardsB)
@@ -96,8 +96,8 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Clubs")
         ]
 
-        expectedA = Hand.new(type: :three_kind, cards: expected_cards, kicker: [Card.new("A", "Diamonds")])
-        expectedB = Hand.new(type: :three_kind, cards: expected_cards, kicker: [Card.new("A", "Diamonds"), Card.new("K", "Diamonds")])
+        expectedA = Hand.new(type: :three_kind, cards: expected_cards, kickers: [Card.new("A", "Diamonds")])
+        expectedB = Hand.new(type: :three_kind, cards: expected_cards, kickers: [Card.new("A", "Diamonds"), Card.new("K", "Diamonds")])
 
         handA = mock_class.identify(cardsA)
         handB = mock_class.identify(cardsB)
@@ -240,7 +240,7 @@ describe IdentificationService, '#identify' do
             Card.new(4, "Spades")
         ]
 
-        expected = Hand.new(type: :four_kind, cards: expected_cards, kicker: [Card.new("A", "Clubs")])
+        expected = Hand.new(type: :four_kind, cards: expected_cards, kickers: [Card.new("A", "Clubs")])
 
         handA = mock_class.identify(cardsA)
         handB = mock_class.identify(cardsB)

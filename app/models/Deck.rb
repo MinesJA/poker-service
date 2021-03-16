@@ -6,15 +6,21 @@ class Deck
     end
 
     
-    # Pulls first card from the deck
-    # Should only be used as deal
-    # if shuffle has already happened
-    def deal()
-        card = self.cards.shift()
-        if (card)
-            card
+    # Returns first card from the deck
+    # by default or an array of first x
+    # cards if given a count
+    # 
+    # NOTE: Does not shuffle
+    # If a random card is requried, the deck
+    # must be shuffle 
+    # 
+    # @param Integer count
+    # @returns <Card> or <Array of Cards>
+    def deal(count: 1)
+        if self.cards >= count
+            self.cards.shift(count)
         else 
-            raise "Deck is empty. Cannot deal more than 52 cards."
+            raise "Cannot deal more than 52 cards."
         end
     end
 
@@ -23,6 +29,15 @@ class Deck
     # the deck.
     def pull(card)
         self.cards.delete(card)
+    end
+
+    # Pulls a specific card from a deck by 
+    # the cards short name 
+    # 
+    # @param String short short name of card
+    # @returns Card card object
+    def pull_short(short)
+        self.pull(Card.from_str(short))
     end
 
     def contains(card)

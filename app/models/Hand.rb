@@ -15,7 +15,7 @@ class Hand
         straight_flush 
         royal_flush).zip(1..10).to_h
 
-    attr_reader :type, :cards, :kicker
+    attr_reader :type, :cards, :kickers
 
     def self.types
         TYPES
@@ -29,8 +29,9 @@ class Hand
     def initialize(type:, cards:, kickers: [])
         # TODO: kickers prob needs to be {hole: [], community: []} with cards in order of deal 
         # (so last index of community should be last card dealth)
-        raise "Invalid type" unless TYPES.include?(type)
-        raise "Cards cannot be empty" unless cards.any?
+        raise ArgumentError.new("Invalid type") unless TYPES.include?(type)
+        raise ArgumentError.new("Cards cannot be empty") unless cards.any?
+        raise ArgumentError.new("Cannot have more than 5 cards in hand") unless (cards.size + kickers.size) <= 5
         @type = type
         # TODO: Should cards be set?
         @cards = cards
@@ -46,74 +47,25 @@ class Hand
 
         if comp == 0
             case @type
-            when :high_card
-                #  Highest card then
-                #  Compare up to 4 kickers
-                c = self.cards.first <=> other.cards.first
-                if c == 0
-                    return self.kickers.max(4).compare_sorted(other.kickers.max(4))
-                end
-                return c
-            when :pair
-                # Highest pair then
-                # Compare up to 3 kickers
-                c = self.cards.first <=> other.cards.first
-                if c == 0
-                    return self.kickers.max(3).compare_sorted(other.kickers.max(3))
-                end
-                return c
-            when :two_pair 
-                # Highest pair then
-                # next pair
-                # Compare 1 kicker
-                c = self.cards.compare_sorted(other.cards)
-                if c == 0
-                    return self.kickers.max <=> other.kickers.max
-                end
-                return c
-            when :three_kind
-                # Strength of 3 of a kind
-                # Compare up to 2 kickers
-                c = self.cards.first <=> other.cards.first
-                if c == 0
-                    return self.kickers.max(2).compare_sorted(other.kickers.max(2))
-                end
-                return c
-
-            when :straight 
+            when :high_card, :pair, :two_pair, :three_kind, :four_kind 
+                c = self.cards.uniq(&:rank).max(2).compare_sorted(other.cards.uniq(&:rank).max(2))
+                return c == 0 ? self.kickers.compare_sorted(other.kickers) : c
+            when :straight, :straight_flush
                 # Strongest single card 
                 return self.cards.max <=> other.cards.max
-
             when :flush 
                 # Compare all cards one by one sorted
                 return self.cards.compare_sorted(other.cards)
-
-            when :full_house 
+            when :full_house
                 # Strength of 3 of a kind
-                # Strengtho of the pair
-
+                # Strength of the pair
                 x = self.cards.group_by_frequency(&:rank)
                 y = other.cards.group_by_frequency(&:rank)
                 c = x[3].first <=> y[3].first
-
-                if (fh == 0)
-                    return x[2].first <=> y[2].first
-                end
-                return c
-
-            when :four_kind 
-                # Strength of 4 of a kind
-                # Compare 1 kicker
-                c = self.cards.first <=> other.cards.first
-                if c == 0
-                    return self.kickers.max(1).compare_sorted(other.kickers.max(1))
-                end
-                return c
-            when :straight_flush 
-                return self.cards.max <=> hand.cards.max
+                return c == 0 ? x[2].first <=> y[2].first : c
             when :royal_flush
                 # No tie breaker, always a tie
-                return 0
+                return comp
             end    
         end
 

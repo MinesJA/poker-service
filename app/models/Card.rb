@@ -18,8 +18,8 @@ class Card
     end
 
     def initialize(rank, suit)
-        raise "Invalid rank" unless RANKS.include?(rank)
-        raise "Invalid suit" unless SUITS.include?(suit)
+        raise ArgumentError.new("Invalid rank") unless RANKS.include?(rank)
+        raise ArgumentError.new("Invalid suit") unless SUITS.include?(suit)
         @rank = rank
         @suit = suit
     end
@@ -55,10 +55,6 @@ class Card
         # self.roles    = serialized_user[:roles] || []
     end
 
-    # Get's the score of the rank
-    #   example. 
-    #       <Card rank=Jack>.get_score() 
-    #           => 11
     def score()
         RANKS[@rank]
     end

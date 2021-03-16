@@ -1,12 +1,15 @@
 class Round
-    attr_reader :deck, :holes, :community, :burned, :deal_hands, :flop_hands, :turn_hands, :river_hands, :win_hands
+    attr_reader(
+        :deck, :holes, :community, :burned, 
+        :deal_hands, :flop_hands, :turn_hands, :river_hands
+    )
     
     # Object for storing results of a completed round.
     # Deck, holes, community, burned are all stored as
     # a way to track history and for potential audit.
     # 
     # Hands are hash of player_num to best hand they had
-    # at a particular point in the game (after deal, 
+    # at that particular point in the game (after deal, 
     # after flop, etc.)
     # 
     # This should be the object for serialization to be sent
@@ -31,26 +34,30 @@ class Round
         @river_hands = river_hands
     end
 
-    def determine_win_hands()
-        
+    def marshal_dump
+        # TODO: implment strategy that produces:
+        # <Card rank=King suit=Diamonds> => "KD"
+        # 
+        # {}.tap do |result|
+        #   result[:age]      = age
+        #   result[:fullname] = fullname if fullname.size <= 64
+        #   result[:roles]    = roles unless roles.include? :admin
+        # end
+    end
+    
+    def marshal_load(serialized_user)
+        # TODO: implment strategy that takes:
+        # "KD" => <Card rank=King suit=Diamonds>
+        # or "King Diamonds" => <Card rank=King suit=Diamonds>
+        # 
+        # self.age      = serialized_user[:age]
+        # self.fullname = serialized_user[:fullname]
+        # self.roles    = serialized_user[:roles] || []
+    end
+
+    def to_s
         
         
     end
-
-
-    # def <=>(round)
-    #     self.round round.
-    # end
-
-    # {1: <Hand ...>, 2: <Hand ...>, ...}
-    # Need to have record of best hands at every stage and ordering
-    # [<Hand>, <Hand>, ]
-
-    # TODO: Do we need to implement a serialization strategy via
-    #   Marshal dump:
-    #   https://blog.appsignal.com/2019/03/26/object-marshalling-in-ruby.html
-    #   May need to do this for Cards and Hands as well
-
-
 
 end

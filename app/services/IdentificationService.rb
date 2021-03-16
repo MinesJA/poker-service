@@ -35,8 +35,9 @@ module IdentificationService
         
         if by_freq.key?(4)
             # There can only be one set of 4, so on need to check for another
-            kicker = by_freq.values_at(1,2,3).flatten.compact.max
-            return Hand.new(type: :four_kind, cards: by_freq[4], kicker: [kicker])
+            kickers = by_freq.values_at(1,2,3)
+                            .flatten.compact
+            return Hand.new(type: :four_kind, cards: by_freq[4], kickers: kickers.max(1))
         elsif by_freq.key?(3)
             threes = by_freq[3].max(3)
             if by_freq.key?(2)
@@ -44,18 +45,17 @@ module IdentificationService
                 return Hand.new(type: :full_house, cards: threes + twos)
             else
                 kicker = by_freq.values_at(1,2,3).flatten.compact
-                            .filter{|c| !threes.include?(c)}
-                            .max
-                return Hand.new(type: :three_kind, cards: threes, kicker: [kicker])
+                            .filter{|c| !threes.include?(c)}            
+                return Hand.new(type: :three_kind, cards: threes, kickers: kicker.max(1))
             end
         elsif by_freq.key?(2)
             twos = by_freq[2].max(4)
             kickers = by_freq.values_at(1,2).flatten.compact
                             .filter{|c| !twos.include?(c)}
             if twos.size == 4
-                return Hand.new(type: :two_pair, cards: twos, kicker: [kicker])
+                return Hand.new(type: :two_pair, cards: twos, kickers: kickers.max(1))
             else
-                return Hand.new(type: :pair, cards: twos, kicker: [kickers.max(3)])
+                return Hand.new(type: :pair, cards: twos, kickers: kickers.max(3))
             end
         end
     end
@@ -93,6 +93,6 @@ module IdentificationService
     end
 
     def high_card(cards)
-        return Hand.new(type: :high_card, cards: [cards.max], kicker: cards.max(5))
+        return Hand.new(type: :high_card, cards: [cards.max], kickers: cards.max(4))
     end
 end

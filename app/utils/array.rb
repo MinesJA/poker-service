@@ -104,8 +104,6 @@ class Array
                     nil
                   end
                 }
-    
-    byebug
 
     return maybe_x ? maybe_x : 0
   end

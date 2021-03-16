@@ -11,8 +11,8 @@ describe Card, '.new' do
     end    
 
     it 'raises an error with an invalid rank or suit' do
-        expect{Card.new(1, "Clubs")}.to raise_error("Invalid rank")
-        expect{Card.new(2, "Foo")}.to raise_error("Invalid suit")
+        expect{Card.new(1, "Clubs")}.to raise_error(ArgumentError)
+        expect{Card.new(2, "Foo")}.to raise_error(ArgumentError)
     end
 end
 
@@ -30,8 +30,8 @@ end
 
 describe Card, '#score' do
     it 'returns a cards rank score' do
-        card = Card.new(2, "D")
-        expect(card.score).to be_eql(1)
+        card = Card.new(2, "Diamonds")
+        expect(card.score).to be_eql(0)
     end
 end
 
@@ -43,30 +43,34 @@ describe Card, '#<=>' do
     end
 
     it 'can be sorted by rank' do
-        cards = [Card.new(2, "Clubs"),
-                Card.new(6, "Spades"),    
-                Card.new(2, "Diamonds"),
-                Card.new(5, "Spades")]
+        cards = [
+            Card.new(2, "Clubs"),
+            Card.new(6, "Spades"),    
+            Card.new(2, "Diamonds"),
+            Card.new(5, "Spades")
+        ]
 
-        expected = [Card.new(2, "Clubs"),
-                    Card.new(2, "Diamonds"),
-                    Card.new(5, "Spades"),
-                    Card.new(6, "Spades")]
+        expected = [
+            Card.new(2, "Clubs"),
+            Card.new(2, "Diamonds"),
+            Card.new(5, "Spades"),
+            Card.new(6, "Spades")
+        ]
 
-        expect(cards.sort).to contain_exactly(expected)
+        expect(cards.sort).to be_eql(expected)
     end
 end
 
 describe Card, '.from_str' do
     it 'creates a card from the short name of card' do
         card = Card.from_str("KD")
-        expected Card.new("K", "Diamonds")
+        expected = Card.new("K", "Diamonds")
 
-        expect(card).to be(expected)
+        expect(card).to be_eql(expected)
 
-        card2 = Card.from_str("2H")
-        expected2 Card.new(2, "Hearts")
+        cardA = Card.from_str("2H")
+        expectedA = Card.new(2, "Hearts")
         
-        expect(card2).to be(expected2)
+        expect(cardA).to be_eql(expectedA)
     end
 end
