@@ -26,11 +26,10 @@ describe Deck, '.new' do
     end
 
     it 'contains all the right cards' do 
-        expect(Suit::ALL.size).to eql(4)
-        expect(Rank::ALL.size).to eql(13)
-    
-        cards = Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(r,s) }
+        expect(Card.suits.size).to eql(4)
+        expect(Card.ranks.size).to eql(13)
+        cards = Card.suits.flat_map{ |s|
+            Card.ranks.map { |r| Card.new(r, s) }
         }
     
         expect(cards.size).to eql(52)
@@ -42,7 +41,7 @@ describe Deck, '.new' do
 end
 
 describe Deck, '#deal' do
-    it 'deals a single card' do
+    it 'deals a single card by default' do
         deck = Deck.new()
         expect(deck.size()).to eq(52)
 
@@ -51,6 +50,16 @@ describe Deck, '#deal' do
         expect(card).to be_instance_of(Card)
         expect(deck.size()).to eq(51)
     end
+
+    it 'can deal more than one card' do
+        deck = Deck.new()
+        expect(deck.size()).to eq(52)
+
+        cards = deck.deal(3)
+
+        expect(cards.size()).to eq(3)
+        expect(deck.size()).to eq(52-3)
+    end 
 
     it 'does not deal a repeating card' do
         deck = Deck.new()
@@ -70,5 +79,27 @@ describe Deck, '#deal' do
 
         #  Trying to deal the 53rd card 
         expect{ deck.deal() }.to raise_error(RuntimeError)
+
+        deckB = Deck.new()
+
+        50.times do
+            deckB.deal()
+        end
+
+        expect { deckB.deal(3) }.to raise_error(RunTimeError)
     end
+end
+
+describe Deck, '#pull' do
+    it 'finds and removes a specific card from the deck' do
+        deck = Deck.new()
+
+        card = Card.new(2, "Clubs")
+        
+        pulled_card = deck.pull(card)
+
+        expect(pulled_card).to eq(card)
+    end
+
+
 end

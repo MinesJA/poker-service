@@ -5,12 +5,39 @@ class Deck
         @cards = generate_cards()
     end
 
-    def deal()
-        if(self.cards.size > 0)
-            self.cards.shift()
-        else
-            raise "Deck is empty. Cannot deal more than 52 cards."
+    
+    # Returns first card from the deck
+    # by default or an array of first x
+    # cards if given a count
+    # 
+    # NOTE: Does not shuffle
+    # If a random card is requried, the deck
+    # must be shuffle 
+    # 
+    # @param Integer count
+    # @returns <Card> or <Array of Cards>
+    def deal(count: 1)
+        if self.cards >= count
+            self.cards.shift(count)
+        else 
+            raise "Cannot deal more than 52 cards."
         end
+    end
+
+    # Pulls a specific card from a deck and 
+    # returns it, and removes the card from 
+    # the deck.
+    def pull(card)
+        self.cards.delete(card)
+    end
+
+    # Pulls a specific card from a deck by 
+    # the cards short name 
+    # 
+    # @param String short short name of card
+    # @returns Card card object
+    def pull_short(short)
+        self.pull(Card.from_str(short))
     end
 
     def contains(card)
@@ -40,9 +67,11 @@ class Deck
     private
 
     def generate_cards()
-        Suit::ALL.flat_map{ |s|
-            Rank::ALL.map { |r| Card.new(r, s) }
-        }.shuffle
+        Card.suits.flat_map do |suit|
+            Card.ranks.map do |rank, score|
+              Card.new(rank, suit)
+            end
+        end.shuffle
     end
-
+    
 end

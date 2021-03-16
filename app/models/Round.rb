@@ -1,38 +1,63 @@
 class Round
-    attr_reader :deck, :holes, :community, :burned, :hands
+    attr_reader(
+        :deck, :holes, :community, :burned, 
+        :deal_hands, :flop_hands, :turn_hands, :river_hands
+    )
     
-    def initialize(deck:, holes:, community:, burned:, hands:)
+    # Object for storing results of a completed round.
+    # Deck, holes, community, burned are all stored as
+    # a way to track history and for potential audit.
+    # 
+    # Hands are hash of player_num to best hand they had
+    # at that particular point in the game (after deal, 
+    # after flop, etc.)
+    # 
+    # This should be the object for serialization to be sent
+    # back in response to controller
+    def initialize(
+        deck:, 
+        holes:, 
+        community:, 
+        burned:, 
+        deal_hands:, 
+        flop_hands:, 
+        turn_hands:, 
+        river_hands:
+    )
         @deck = deck
         @holes = holes
         @community = community
         @burned = burned
-        @hands = hands
+        @deal_hands = deal_hands
+        @flop_hands = flop_hands
+        @turn_hands = turn_hands
+        @river_hands = river_hands
     end
 
-    def get_winner
-        return hands.max_by{|k,v| v.metahand.score}
+    def marshal_dump
+        # TODO: implment strategy that produces:
+        # <Card rank=King suit=Diamonds> => "KD"
+        # 
+        # {}.tap do |result|
+        #   result[:age]      = age
+        #   result[:fullname] = fullname if fullname.size <= 64
+        #   result[:roles]    = roles unless roles.include? :admin
+        # end
+    end
+    
+    def marshal_load(serialized_user)
+        # TODO: implment strategy that takes:
+        # "KD" => <Card rank=King suit=Diamonds>
+        # or "King Diamonds" => <Card rank=King suit=Diamonds>
+        # 
+        # self.age      = serialized_user[:age]
+        # self.fullname = serialized_user[:fullname]
+        # self.roles    = serialized_user[:roles] || []
     end
 
     def to_s
-        winner = get_winner
-        community.map{|k,v| 
-            <<~HEREDOC
-                #{k}
-                #{v.map{|card| card.to_s + '\n'}.join('')}
-            HEREDOC
-        }
-
-        community_cards = community.map{|k,v| "#{k} - \n\t\t #{v.map(&:to_s)}"}.join("\n\t")
-        player_cards = holes.map{|player,cards| "#{player} - \n\t\t #{hands[player]} \n\t\t #{cards.map(&:to_s)}"}.join("\n\t")
-        <<~HEREDOC
-        Round: 
-            Winner: #{winner[0]} with the #{winner[1]}
-
-            Community cards: 
-                #{community_cards}
-            
-            Player cards:
-                #{player_cards}
-        HEREDOC
+        
+        
     end
+
 end
