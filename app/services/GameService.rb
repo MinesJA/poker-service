@@ -92,11 +92,11 @@ module GameService
 
         return (0..run_count).map do |i| 
             d = Deck.new()
-            h = game_params[:holes].to_h.map do |player, card_shorts|
+            h = holes.to_h.map do |player, card_shorts|
                 [player, card_shorts.map{|s| d.pull_short(s)}] 
             end.to_h
 
-            c = game_params[:community].to_h.map do |player, card_shorts|
+            c = community.to_h.map do |player, card_shorts|
                 [player, card_shorts.map{|s| d.pull_short(s)}]
             end.to_h
             

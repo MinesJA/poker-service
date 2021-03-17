@@ -46,7 +46,7 @@ module IdentificationService
             else
                 kicker = by_freq.values_at(1,2,3).flatten.compact
                             .filter{|c| !threes.include?(c)}            
-                return Hand.new(type: :three_kind, cards: threes, kickers: kicker.max(1))
+                return Hand.new(type: :three_kind, cards: threes, kickers: kicker.max(2))
             end
         elsif by_freq.key?(2)
             twos = by_freq[2].max(4)
