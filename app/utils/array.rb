@@ -39,7 +39,6 @@ class Array
         d = block.call(x) - block.call(y)
         return d
       else
-        byebug
         x - y
       end
     }

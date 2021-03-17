@@ -5,6 +5,12 @@ describe IdentificationService, '#identify' do
 
     let(:mock_class) {Class.new { extend IdentificationService } }
 
+    it 'can identify a High Card with right cards' do
+        # TODO: need to write a test case for situation in which there's only 2 cards to choose
+        # like on the deal. Check for accurate kickers        
+
+    end
+
     it 'can identify a Pair with right cards' do
         cardsA = [
             Card.new(4, "Hearts"), 

@@ -34,25 +34,12 @@ class Card
         Card.new(rank, suit)
     end
 
-    def marshal_dump
-        # TODO: implment strategy that produces:
-        # <Card rank=King suit=Diamonds> => "KD"
-        # 
-        # {}.tap do |result|
-        #   result[:age]      = age
-        #   result[:fullname] = fullname if fullname.size <= 64
-        #   result[:roles]    = roles unless roles.include? :admin
-        # end
+    def _dump(level)
+        rank.to_s.concat(suit.initial)
     end
     
-    def marshal_load(serialized_user)
-        # TODO: implment strategy that takes:
-        # "KD" => <Card rank=King suit=Diamonds>
-        # or "King Diamonds" => <Card rank=King suit=Diamonds>
-        # 
-        # self.age      = serialized_user[:age]
-        # self.fullname = serialized_user[:fullname]
-        # self.roles    = serialized_user[:roles] || []
+    def self._load(serialized_card)
+        Card.from_str(serialized_card)
     end
 
     def score()
@@ -77,5 +64,9 @@ class Card
 
     def to_s()
         "#{@rank} of #{@suit}"
+    end
+
+    def as_json(options)
+        rank.to_s + suit.initial
     end
 end

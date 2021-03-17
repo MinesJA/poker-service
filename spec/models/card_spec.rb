@@ -74,3 +74,22 @@ describe Card, '.from_str' do
         expect(cardA).to be_eql(expectedA)
     end
 end
+
+
+describe Card, '#marshal_dump' do
+    it 'serializes a card based on custom marshal dump method' do
+        cardA = Card.new(4, "Clubs")
+
+        cardA_dump = Marshal.dump(cardA)
+        cardA_dump = Marshal.load(cardA_dump)
+
+        cardB = Card.new(4, "Clubs")
+        cardB_dump = Marshal.dump(cardB)
+    end
+
+end
+
+describe Card, '#marshal_load' do
+
+
+end

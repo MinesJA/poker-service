@@ -1,12 +1,6 @@
 module GameService
     include IdentificationService
 
-    # TODO: Should have a defaults that creates
-    # all defaults
-    # def run_with_defaults(num_players)
-    # end
-
-
     # Holes and Community are hashes that should represent any 
     # constants that should exist throughout round. For example, 
     # if player 1 should get an Ace of Spades in the deal, 
@@ -20,19 +14,16 @@ module GameService
     # @param {Integer => [String]} holes_short short names for hole constants by player number
     # @param {Symbol => [String]} community_short short names for community constants by stage symbol
     # @return Round
-    def run_round(num_players:, holes_shorts: {}, community_shorts: {})
-        deck = Deck.new()
-
-        holes = Hash.new{|h, k| h[k] = []}
-        community = Hash.new{|h, k| h[k] = []}
-            
+    def run_round(player_count:, deck: nil, holes: {}, community: {})
+        deck = Deck.new() if deck.nil?
+        holes.default_proc = proc{|h, k| h[k] = []}
+        community.default_proc = proc{|h, k| h[k] = []}
+        burned = []
+        
         2.times do |i|
-            1.upto(num_players) do |player|
-                h_shorts = holes_shorts.fetch(player, [])
-                if h_shorts[i].nil?
+            1.upto(player_count) do |player|
+                if(holes[player].size < 2)
                     holes[player].push(deck.deal)
-                else
-                    holes[player].push(deck.pull_short(h_shorts[i]))
                 end
             end
         end
@@ -42,30 +33,22 @@ module GameService
         burned.push(deck.deal)
         
         # 3) Deal FLOP
-        f_shorts = community_shorts.fetch(:flop, [])
-        (0..2).map do |i| 
-            f_card = f_shorts[i].nil? ? deck.deal() : deck.pull_short(f_shorts[i])
-            community[:flop].push(f_card)
-        end
+        community[:flop].push(*deck.deal_many(3 - community[:flop].size))
         flop_hands = holes.map{|player, hole| [player, identify(hole+community[:flop])]}.to_h
 
         # 4) Burn one
         burned.push(deck.deal)
 
         # 5) Deal the TURN
-        t_short = community_shorts.fetch(:flop, []).first
-        t_card = t_short.nil? ? deck.deal() : deck.pull_short(t_short)
-        community[:turn].push(t_card)
+        community[:turn].push(deck.deal) unless community[:turn].any?
         turn_hands = holes.map{|player, hole| [player, identify(hole + community[:flop] + community[:turn])]}.to_h
 
         # 6) Burn one
         burned.push(deck.deal)
 
         # 7) Deal the RIVER
-        r_short = community_shorts.fetch(:river, []).first
-        r_card = r_card.nil? ? deck.deal() : deck.pull_short(r_short)
-        community[:turn].push(r_card)
-        turn_hands = holes.map{|player, hole| [player, identify(hole + community.values.flatten)]}.to_h
+        community[:river].push(deck.deal) unless community[:river].any?
+        river_hands = holes.map{|player, hole| [player, identify(hole + community.values.flatten)]}.to_h
 
         return Round.new(
             deck: deck, 
@@ -88,11 +71,37 @@ module GameService
     # @param {String => [Card]} holes
     # @param {String => [Card]} community
     # return [Round]
-    def play_rounds(round_count:, deck:, holes:, community:)
+    def run_rounds(run_count:, player_count:, holes:, community:)
         # TODO: implement parralel execution
         # https://www.toptal.com/ruby/ruby-concurrency-and-parallelism-a-practical-primer
 
-        return (1..round_count).map{|i| play_round(deck: deck, holes: holes, community: community)}
+        # pool_count.times do |x|
+        #     fork do
+        #         rounds.push(*(1..per_fork_count).map do |y|
+        #             run_round(player_count: player_count, deck: deck, holes: holes, community: community)
+        #         end)
+        #     end
+        # end
+
+        # fork do
+        #     rounds.push(*(1..left_over).map do |y|
+        #         run_round(player_count: player_count, deck: deck, holes: holes, community: community)
+        #     end)
+        # end
+        # Process.waitall
+
+        return (0..run_count).map do |i| 
+            d = Deck.new()
+            h = game_params[:holes].to_h.map do |player, card_shorts|
+                [player, card_shorts.map{|s| d.pull_short(s)}] 
+            end.to_h
+
+            c = game_params[:community].to_h.map do |player, card_shorts|
+                [player, card_shorts.map{|s| d.pull_short(s)}]
+            end.to_h
+            
+            run_round(player_count: player_count, deck: d, holes: h, community: c)
+        end
     end
     
 
