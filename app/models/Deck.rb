@@ -16,8 +16,14 @@ class Deck
     # 
     # @param Integer count
     # @returns <Card> or <Array of Cards>
-    def deal(count: 1)
-        if self.cards >= count
+    def deal()
+        card = self.cards.shift()
+        raise "Cannot deal more than 52 cards." unless card
+        return card
+    end
+
+    def deal_many(count)
+        if self.cards.size >= count
             self.cards.shift(count)
         else 
             raise "Cannot deal more than 52 cards."
@@ -28,7 +34,9 @@ class Deck
     # returns it, and removes the card from 
     # the deck.
     def pull(card)
-        self.cards.delete(card)
+        card = self.cards.delete(card)
+        raise "Cannot find card. May already have been dealt" unless card
+        return card
     end
 
     # Pulls a specific card from a deck by 

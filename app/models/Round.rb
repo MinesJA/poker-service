@@ -55,9 +55,8 @@ class Round
         # self.roles    = serialized_user[:roles] || []
     end
 
-    def to_s
-        
-        
+    def as_json(options)
+        super.except(*["deck", "burned"])
     end
 
 end

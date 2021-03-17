@@ -93,6 +93,8 @@ module IdentificationService
     end
 
     def high_card(cards)
-        return Hand.new(type: :high_card, cards: [cards.max], kickers: cards.max(4))
+        m = cards.max
+        kickers = cards.filter{|c| c != m}.max(4)
+        return Hand.new(type: :high_card, cards: [m], kickers: kickers)
     end
 end

@@ -41,7 +41,7 @@ describe Deck, '.new' do
 end
 
 describe Deck, '#deal' do
-    it 'deals a single card by default' do
+    it 'deals a single card' do
         deck = Deck.new()
         expect(deck.size()).to eq(52)
 
@@ -50,16 +50,6 @@ describe Deck, '#deal' do
         expect(card).to be_instance_of(Card)
         expect(deck.size()).to eq(51)
     end
-
-    it 'can deal more than one card' do
-        deck = Deck.new()
-        expect(deck.size()).to eq(52)
-
-        cards = deck.deal(3)
-
-        expect(cards.size()).to eq(3)
-        expect(deck.size()).to eq(52-3)
-    end 
 
     it 'does not deal a repeating card' do
         deck = Deck.new()
@@ -72,21 +62,28 @@ describe Deck, '#deal' do
 
     it 'can not deal more cards than a 52 card deck' do
         deck = Deck.new()
+        52.times {deck.deal}
 
-        52.times do
-            deck.deal()
-        end
-
-        #  Trying to deal the 53rd card 
         expect{ deck.deal() }.to raise_error(RuntimeError)
+    end
+end
 
-        deckB = Deck.new()
+describe Deck, '#deal_many' do
+    it 'can deal more than one card' do
+        deck = Deck.new()
+        expect(deck.size()).to eq(52)
 
-        50.times do
-            deckB.deal()
-        end
+        cards = deck.deal_many(3)
 
-        expect { deckB.deal(3) }.to raise_error(RunTimeError)
+        expect(cards.size()).to eq(3)
+        expect(deck.size()).to eq(52-3)
+    end 
+
+    it 'can not deal more cards than a 52 card deck' do
+        deck = Deck.new()
+        50.times {deck.deal}
+
+        expect{ deck.deal_many(3) }.to raise_error(RuntimeError)
     end
 end
 
@@ -101,5 +98,23 @@ describe Deck, '#pull' do
         expect(pulled_card).to eq(card)
     end
 
+    it 'raises an error if the same card is pulled more than once' do
+        deck = Deck.new()
+        card = Card.new(3, "Clubs")
 
+        deck.pull(card)
+        expect{ deck.pull(card) }.to raise_error(RuntimeError)
+    end
+end
+
+describe Deck, '#pull_short' do
+    it 'finds and removes a specific card from the deck' do
+        deck = Deck.new()
+
+        card = Card.new(2, "Clubs")
+        
+        pulled_card = deck.pull(card)
+
+        expect(pulled_card).to eq(card)
+    end
 end
